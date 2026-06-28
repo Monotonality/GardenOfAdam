@@ -1,18 +1,46 @@
 "use client"
 
-import { useState } from "react"
-import { apps } from "@/lib/apps"
+import { useEffect, useState } from "react"
+import { createClient } from "@/lib/supabase/client"
+import { apps, OWNER_EMAIL } from "@/lib/apps"
+import { getAccessibleApps, type UserPermissions } from "@/lib/permissions"
 import { SearchBar } from "@/components/search-bar"
 import { ViewToggle, type ViewMode } from "@/components/view-toggle"
 import { UserButton } from "@/components/user-button"
 import { AppCard } from "@/components/app-card"
 import { AppRow } from "@/components/app-row"
+import type { User } from "@supabase/supabase-js"
+
+function buildPermissions(user: User | null): UserPermissions | null {
+  if (!user) return null
+  return {
+    userId: user.id,
+    email: user.email ?? "",
+    isOwner: user.email === OWNER_EMAIL,
+    approvedApps: [],
+  }
+}
 
 export default function HubPage() {
   const [search, setSearch] = useState("")
   const [view, setView] = useState<ViewMode>("grid")
+  const [user, setUser] = useState<User | null>(null)
 
-  const filtered = apps.filter((app) =>
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
+
+  const permissions = buildPermissions(user)
+  const visibleApps = getAccessibleApps(apps, permissions)
+
+  const filtered = visibleApps.filter((app) =>
     app.name.toLowerCase().includes(search.toLowerCase())
   )
 

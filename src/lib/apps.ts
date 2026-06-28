@@ -21,3 +21,5 @@ export const apps: App[] = [
     icon: "🌿",
   },
 ]
+
+export const OWNER_EMAIL = "adam@example.com" // CHANGE THIS to your email

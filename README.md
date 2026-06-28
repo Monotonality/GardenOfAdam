@@ -39,27 +39,42 @@ All managed through a single Supabase Auth account. A permissions table maps who
 gardenofadam/
 ├── src/
 │   ├── app/
-│   │   ├── page.tsx           # Hub
-│   │   ├── layout.tsx         # Root layout (dark theme)
-│   │   ├── globals.css        # Tailwind + theme variables
-│   │   └── auth/              # Auth pages (placeholder)
+│   │   ├── page.tsx               # Hub
+│   │   ├── layout.tsx             # Root layout (dark theme)
+│   │   ├── globals.css            # Tailwind + theme variables
+│   │   └── auth/                  # Auth pages
+│   │       ├── login/
+│   │       ├── sign-up/
+│   │       ├── sign-up-success/
+│   │       ├── forgot-password/
+│   │       ├── update-password/
+│   │       ├── error/
+│   │       └── confirm/route.ts
 │   ├── components/
-│   │   ├── ui/                # shadcn/ui primitives
-│   │   ├── app-card.tsx       # Grid card
-│   │   ├── app-row.tsx        # List row
-│   │   ├── search-bar.tsx     # Search input
-│   │   ├── view-toggle.tsx    # Grid/List toggle
-│   │   └── user-button.tsx    # Auth-aware user menu
+│   │   ├── ui/                    # shadcn/ui primitives
+│   │   ├── app-card.tsx           # Grid card
+│   │   ├── app-row.tsx            # List row
+│   │   ├── search-bar.tsx         # Search input
+│   │   ├── view-toggle.tsx        # Grid/List toggle
+│   │   ├── user-button.tsx        # Auth-aware user menu
+│   │   ├── login-form.tsx
+│   │   ├── sign-up-form.tsx
+│   │   ├── forgot-password-form.tsx
+│   │   ├── update-password-form.tsx
+│   │   └── logout-button.tsx
 │   ├── lib/
-│   │   ├── apps.ts            # App registry (single source of truth)
+│   │   ├── apps.ts                # App registry (single source of truth)
+│   │   ├── permissions.ts         # Access control helpers
 │   │   └── supabase/
-│   │       ├── client.ts      # Browser Supabase client
-│   │       ├── server.ts      # Server Supabase client
-│   │       └── middleware.ts  # Proxy session helpers
-│   ├── proxy.ts               # Next.js 16 proxy (formerly middleware)
-│   └── middleware.ts           # Supabase session refresh (deprecated in favor of proxy)
-├── .env.local                 # Supabase credentials (gitignored)
-├── components.json            # shadcn config
+│   │       ├── client.ts          # Browser Supabase client
+│   │       ├── server.ts          # Server Supabase client
+│   │       └── middleware.ts      # Proxy session helpers
+│   └── proxy.ts                   # Next.js 16 proxy (session refresh)
+├── supabase/
+│   └── migrations/
+│       └── 00001_app_permissions.sql
+├── .env.local                     # Supabase credentials (gitignored)
+├── components.json                # shadcn config
 └── README.md
 ```
 
@@ -79,7 +94,31 @@ gardenofadam/
      icon: "✅",
    }
    ```
-4. It appears on the hub automatically.
+4. It appears on the hub automatically (filtered by your access level).
+
+## Protecting a Route (per-app auth)
+
+In any app page that requires auth:
+
+```ts
+import { createClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
+
+export default async function ProtectedPage() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect("/auth/login")
+  // ... rest of your app
+}
+```
+
+## Adding the Supabase Table
+
+Run the migration in `supabase/migrations/00001_app_permissions.sql` in your Supabase SQL editor to create the `app_permissions` table. Make sure to replace `adam@example.com` with your email.
+
+## Owner Setup
+
+In `src/lib/apps.ts`, update `OWNER_EMAIL` to your email address. This grants you full access to all apps.
 
 ## Getting Started
 
@@ -92,7 +131,7 @@ Open [localhost:3000](http://localhost:3000).
 
 ### Environment Variables
 
-Copy `.env.local` from your Supabase project settings:
+Already set up in `.env.local`:
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=<your-project-url>

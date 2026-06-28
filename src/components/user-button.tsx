@@ -32,6 +32,7 @@ export function UserButton() {
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
+    window.location.href = "/"
   }
 
   if (!user) {
