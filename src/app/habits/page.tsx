@@ -36,6 +36,8 @@ function ContributionGrid({ days }: { days: DayStatus[] }) {
     weeks.push(days.slice(i, i + 7))
   }
 
+  const todayStr = new Date().toISOString().split("T")[0]
+
   return (
     <div className="flex gap-0.5">
       {weeks.map((week, wi) => (
@@ -43,7 +45,7 @@ function ContributionGrid({ days }: { days: DayStatus[] }) {
           {week.map((day, di) => (
             <div
               key={di}
-              className={`size-2.5 rounded-sm ${gridColor(day.status)}`}
+              className={`size-2.5 rounded-sm ${gridColor(day.status)} ${day.date === todayStr ? "ring-1 ring-amber-400" : ""}`}
               title={`${day.date}: ${day.status}`}
             />
           ))}
