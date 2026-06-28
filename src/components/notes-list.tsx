@@ -57,7 +57,7 @@ export function NotesList({ notes, selectedId, onSelect, onCreate, onDelete }: N
                 e.stopPropagation()
                 onDelete(note.id)
               }}
-              className="shrink-0 rounded p-1 text-zinc-600 opacity-0 transition-all hover:text-red-400 group-hover:opacity-100"
+              className="shrink-0 rounded p-1 text-zinc-500 hover:text-red-400 transition-colors md:opacity-0 md:group-hover:opacity-100"
             >
               <Trash2 className="size-3.5" />
             </button>
