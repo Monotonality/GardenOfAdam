@@ -34,13 +34,57 @@ export interface HabitInput {
 
 const DAY_NAMES = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
 
+function getLastDay(year: number, month: number): number {
+  return new Date(year, month + 1, 0).getDate()
+}
+
+function getNthDayOfMonth(year: number, month: number, occurrence: string, dayOfWeek: string): number | null {
+  const dayIndex = DAY_NAMES.indexOf(dayOfWeek)
+  if (dayIndex === -1) return null
+  const lastDay = getLastDay(year, month)
+
+  if (occurrence === "last") {
+    for (let d = lastDay; d >= 1; d--) {
+      if (new Date(year, month, d).getDay() === dayIndex) return d
+    }
+    return null
+  }
+
+  const occurrenceNum = ["first", "second", "third", "fourth"].indexOf(occurrence)
+  if (occurrenceNum === -1) return null
+
+  let count = 0
+  for (let d = 1; d <= lastDay; d++) {
+    if (new Date(year, month, d).getDay() === dayIndex) {
+      if (count === occurrenceNum) return d
+      count++
+    }
+  }
+  return null
+}
+
 function matchesSchedule(habit: Habit, date: Date): boolean {
   if (habit.schedule_type === "daily") return true
   if (habit.schedule_type === "weekly") {
     return habit.schedule_days.includes(DAY_NAMES[date.getDay()])
   }
   if (habit.schedule_type === "monthly") {
-    return habit.schedule_days.includes(String(date.getDate()))
+    const y = date.getFullYear()
+    const m = date.getMonth()
+    const d = date.getDate()
+    const lastDay = getLastDay(y, m)
+
+    for (const daySpec of habit.schedule_days) {
+      if (daySpec === "start" && d === 1) return true
+      if (daySpec === "end" && d === lastDay) return true
+
+      const parts = daySpec.split("_")
+      if (parts.length === 2) {
+        const [occurrence, dayOfWeek] = parts
+        const nthDay = getNthDayOfMonth(y, m, occurrence, dayOfWeek)
+        if (nthDay !== null && d === nthDay) return true
+      }
+    }
   }
   return false
 }
