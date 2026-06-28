@@ -115,18 +115,29 @@ export default function ScratchPage() {
           )}
         </>
       ) : (
-        <div className={`flex flex-col border-r border-zinc-800 bg-zinc-900/50 transition-all duration-200 ${sidebarOpen ? "w-72" : "w-12"}`}>
-          <div className="flex items-center gap-2 border-b border-zinc-800 px-3 py-3">
-            <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors shrink-0">
-              <ArrowLeft className="size-4" />
-            </Link>
-            <span className={`text-sm font-medium text-zinc-100 flex-1 ${sidebarOpen ? "" : "hidden"}`}>Scratch</span>
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors"
-            >
-              {sidebarOpen ? <PanelLeftClose className="size-4" /> : <PanelLeft className="size-4" />}
-            </button>
+        <div className={`flex flex-col border-r border-zinc-800 bg-zinc-900/50 transition-all duration-200 ${sidebarOpen ? "w-72" : "w-10"}`}>
+          <div className={`flex items-center border-b border-zinc-800 py-3 ${sidebarOpen ? "gap-2 px-3" : "justify-center px-0"}`}>
+            {sidebarOpen ? (
+              <>
+                <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors shrink-0">
+                  <ArrowLeft className="size-4" />
+                </Link>
+                <span className="text-sm font-medium text-zinc-100 flex-1">Scratch</span>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  <PanelLeftClose className="size-4" />
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="text-zinc-500 hover:text-zinc-300 transition-colors"
+              >
+                <PanelLeft className="size-4" />
+              </button>
+            )}
           </div>
           {sidebarOpen && (
             <NotesList
