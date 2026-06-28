@@ -8,7 +8,6 @@ import {
   createHabit,
   archiveHabit,
   updateHabitAndRegenerate,
-  generateTodosForHabit,
   getHabitGridData,
   type Habit,
   type HabitInput,
@@ -279,10 +278,7 @@ function CreateHabitDialog({ habit, onClose, onSaved }: { habit?: Habit; onClose
     if (isEditing && habit) {
       await updateHabitAndRegenerate(habit.id, habit, input)
     } else {
-      const created = await createHabit(input)
-      if (created) {
-        await generateTodosForHabit(created as Habit)
-      }
+      await createHabit(input)
     }
     setSaving(false)
     onSaved()

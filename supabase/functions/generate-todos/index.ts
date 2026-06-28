@@ -80,7 +80,7 @@ Deno.serve(async (_req: Request) => {
 
   let totalGenerated = 0
   const now = new Date()
-  const lookbackStart = new Date(now.getTime() - 48 * 60 * 60000)
+  const lookbackStart = new Date(now.getTime() - 10 * 60 * 1000)
   const allHabitIds = habits.map((h: any) => h.id)
 
   const { data: existingTodos } = await supabase
