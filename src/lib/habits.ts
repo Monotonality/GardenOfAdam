@@ -95,7 +95,7 @@ function isAfterEnd(habit: Habit, date: Date): boolean {
 }
 
 export function computeScheduleDates(habit: Habit, from: Date, to: Date): Date[] {
-  const dates: Date[] = []
+  const dateMap = new Map<string, Date>()
   const current = new Date(from)
   current.setHours(0, 0, 0, 0)
   const end = new Date(to)
@@ -111,12 +111,15 @@ export function computeScheduleDates(habit: Habit, from: Date, to: Date): Date[]
       const [h, m] = habit.schedule_time.split(":").map(Number)
       const dt = new Date(current)
       dt.setHours(h, m, 0, 0)
-      dates.push(dt)
-      occurrences++
+      const key = dt.toISOString()
+      if (!dateMap.has(key)) {
+        dateMap.set(key, dt)
+        occurrences++
+      }
     }
     current.setDate(current.getDate() + 1)
   }
-  return dates
+  return Array.from(dateMap.values())
 }
 
 export async function getHabits(): Promise<Habit[]> {

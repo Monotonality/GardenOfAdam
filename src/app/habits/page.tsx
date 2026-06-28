@@ -9,7 +9,6 @@ import {
   archiveHabit,
   updateHabitAndRegenerate,
   generateTodosForHabit,
-  generateAllTodos,
   getHabitGridData,
   type Habit,
   type HabitInput,
@@ -92,7 +91,6 @@ export default function HabitsPage() {
         router.push("/auth/login")
         return
       }
-      await generateAllTodos()
       await loadData()
       setLoading(false)
     })

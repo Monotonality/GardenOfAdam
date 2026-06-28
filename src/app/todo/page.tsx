@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { getActiveTodos, createTodo, updateStatus, deleteTodo, type Todo } from "@/lib/todos"
-import { generateAllTodos } from "@/lib/habits"
 import { OWNER_EMAIL } from "@/lib/apps"
 import { ArrowLeft, Check, X, Undo2, Trash2, Plus, ChevronDown, ChevronRight, Clock, Repeat } from "lucide-react"
 import Link from "next/link"
@@ -51,7 +50,6 @@ export default function TodoPage() {
         router.push("/auth/login")
         return
       }
-      await generateAllTodos()
       await loadTodos()
       setLoading(false)
     })
