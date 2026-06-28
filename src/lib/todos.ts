@@ -36,8 +36,7 @@ export async function getActiveTodos(): Promise<Todo[]> {
   const { data } = await supabase
     .from("todos")
     .select("*")
-    .eq("status", "active")
-    .order("due_by", { ascending: true })
+    .order("created_at", { ascending: false })
   return data ?? []
 }
 
