@@ -27,8 +27,8 @@ create policy "Only owners can manage permissions"
   on public.app_permissions
   for all
   using (
-    auth.jwt() ->> 'email' = 'adam@example.com'  -- CHANGE THIS to your email
+    auth.jwt() ->> 'email' = 'adam.j.tor@gmail.com'
   )
   with check (
-    auth.jwt() ->> 'email' = 'adam@example.com'  -- CHANGE THIS to your email
+    auth.jwt() ->> 'email' = 'adam.j.tor@gmail.com'
   );

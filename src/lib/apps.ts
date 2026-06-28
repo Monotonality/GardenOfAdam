@@ -22,4 +22,4 @@ export const apps: App[] = [
   },
 ]
 
-export const OWNER_EMAIL = "adam@example.com" // CHANGE THIS to your email
+export const OWNER_EMAIL = "adam.j.tor@gmail.com"
