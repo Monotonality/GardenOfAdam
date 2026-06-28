@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react"
-import { StickyNote, ListTodo } from "lucide-react"
+import { StickyNote, ListTodo, Repeat } from "lucide-react"
 
 export type AppAccess = "public" | "user" | "approved" | "owner"
 
@@ -28,6 +28,14 @@ export const apps: App[] = [
     status: "live",
     access: "owner",
     icon: ListTodo,
+  },
+  {
+    slug: "habits",
+    name: "Habits",
+    description: "Recurring routines with contribution grid tracking",
+    status: "live",
+    access: "owner",
+    icon: Repeat,
   },
 ]
 

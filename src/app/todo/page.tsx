@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
-import { getTodos, createTodo, updateStatus, deleteTodo, type Todo } from "@/lib/todos"
+import { getActiveTodos, createTodo, updateStatus, deleteTodo, type Todo } from "@/lib/todos"
+import { generateAllTodos } from "@/lib/habits"
 import { OWNER_EMAIL } from "@/lib/apps"
-import { ArrowLeft, Check, X, Undo2, Trash2, Plus, ChevronDown, ChevronRight } from "lucide-react"
+import { ArrowLeft, Check, X, Undo2, Trash2, Plus, ChevronDown, ChevronRight, Clock, Repeat } from "lucide-react"
 import Link from "next/link"
 
 function relativeTime(dateStr: string): string {
@@ -20,6 +21,19 @@ function relativeTime(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString()
 }
 
+function formatDueBy(dueBy: string | null): string | null {
+  if (!dueBy) return null
+  const due = new Date(dueBy)
+  const now = Date.now()
+  const diff = due.getTime() - now
+  if (diff < 0) return "Overdue"
+  const mins = Math.floor(diff / 60000)
+  if (mins < 60) return `${mins}m`
+  const hours = Math.floor(mins / 60)
+  if (hours < 24) return `${hours}h`
+  return due.toLocaleDateString()
+}
+
 export default function TodoPage() {
   const [loading, setLoading] = useState(true)
   const [todos, setTodos] = useState<Todo[]>([])
@@ -31,19 +45,20 @@ export default function TodoPage() {
   const supabase = createClient()
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       const u = data.user
       if (!u || u.email !== OWNER_EMAIL) {
         router.push("/auth/login")
         return
       }
-      loadTodos()
+      await generateAllTodos()
+      await loadTodos()
       setLoading(false)
     })
   }, [])
 
   const loadTodos = async () => {
-    const data = await getTodos()
+    const data = await getActiveTodos()
     setTodos(data)
   }
 
@@ -83,33 +98,43 @@ export default function TodoPage() {
   const completed = todos.filter((t) => t.status === "completed")
   const failed = todos.filter((t) => t.status === "failed")
 
-  const TodoItem = ({ todo }: { todo: Todo }) => (
-    <div className="group flex items-center gap-3 border-b border-zinc-800/50 px-4 py-2.5 transition-colors hover:bg-zinc-800/30">
-      <span className="flex-1 min-w-0">
-        <span className="text-sm text-zinc-200">{todo.title}</span>
-        <span className="ml-2 text-xs text-zinc-600">{relativeTime(todo.created_at)}</span>
-      </span>
-      <div className="flex items-center gap-1 shrink-0">
-        {todo.status === "active" ? (
-          <>
-            <button onClick={() => handleStatus(todo.id, "completed")} className="rounded p-1 text-zinc-600 hover:text-emerald-400 transition-colors" title="Complete">
-              <Check className="size-3.5" />
+  const TodoItem = ({ todo }: { todo: Todo }) => {
+    const dueByText = formatDueBy(todo.due_by)
+    return (
+      <div className="group flex items-center gap-3 border-b border-zinc-800/50 px-4 py-2.5 transition-colors hover:bg-zinc-800/30">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          {todo.habit_id && <Repeat className="size-3 shrink-0 text-zinc-600" />}
+          <span className="text-sm text-zinc-200 truncate">{todo.title}</span>
+          {dueByText && (
+            <span className={`shrink-0 text-xs flex items-center gap-1 ${dueByText === "Overdue" ? "text-red-400" : "text-zinc-600"}`}>
+              <Clock className="size-3" />
+              {dueByText}
+            </span>
+          )}
+          <span className="shrink-0 text-xs text-zinc-600">{relativeTime(todo.created_at)}</span>
+        </div>
+        <div className="flex items-center gap-1 shrink-0">
+          {todo.status === "active" ? (
+            <>
+              <button onClick={() => handleStatus(todo.id, "completed")} className="rounded p-1 text-zinc-600 hover:text-emerald-400 transition-colors" title="Complete">
+                <Check className="size-3.5" />
+              </button>
+              <button onClick={() => handleStatus(todo.id, "failed")} className="rounded p-1 text-zinc-600 hover:text-red-400 transition-colors" title="Fail">
+                <X className="size-3.5" />
+              </button>
+            </>
+          ) : (
+            <button onClick={() => handleStatus(todo.id, "active")} className="rounded p-1 text-zinc-600 hover:text-zinc-300 transition-colors" title="Reactivate">
+              <Undo2 className="size-3.5" />
             </button>
-            <button onClick={() => handleStatus(todo.id, "failed")} className="rounded p-1 text-zinc-600 hover:text-red-400 transition-colors" title="Fail">
-              <X className="size-3.5" />
-            </button>
-          </>
-        ) : (
-          <button onClick={() => handleStatus(todo.id, "active")} className="rounded p-1 text-zinc-600 hover:text-zinc-300 transition-colors" title="Reactivate">
-            <Undo2 className="size-3.5" />
+          )}
+          <button onClick={() => handleDelete(todo.id)} className="rounded p-1 text-zinc-600 hover:text-red-400 transition-colors md:opacity-0 md:group-hover:opacity-100" title="Delete">
+            <Trash2 className="size-3.5" />
           </button>
-        )}
-        <button onClick={() => handleDelete(todo.id)} className="rounded p-1 text-zinc-600 hover:text-red-400 transition-colors md:opacity-0 md:group-hover:opacity-100" title="Delete">
-          <Trash2 className="size-3.5" />
-        </button>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 
   return (
     <div className="mx-auto flex min-h-screen max-w-2xl flex-col bg-zinc-950">
