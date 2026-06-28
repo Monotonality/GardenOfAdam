@@ -17,3 +17,20 @@ create policy "Users can manage their own notes"
   on public.notes for all
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
+
+-- Auto-set user_id from authenticated session on insert
+create or replace function public.set_user_id()
+returns trigger as $$
+begin
+  new.user_id = auth.uid();
+  return new;
+end;
+$$ language plpgsql security definer;
+
+create trigger set_user_id_on_insert
+  before insert on public.notes
+  for each row
+  execute function public.set_user_id();
+
+-- Grant API access for the notes table
+grant all on public.notes to anon, authenticated;

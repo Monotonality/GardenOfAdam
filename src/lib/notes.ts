@@ -20,9 +20,11 @@ export async function getNotes(): Promise<Note[]> {
 
 export async function createNote(): Promise<Note | null> {
   const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
   const { data } = await supabase
     .from("notes")
-    .insert({ title: "Untitled", content: "" })
+    .insert({ user_id: user.id, title: "Untitled", content: "" })
     .select()
     .single()
   return data

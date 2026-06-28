@@ -7,7 +7,7 @@ import { getNotes, createNote, deleteNote, type Note } from "@/lib/notes"
 import { OWNER_EMAIL } from "@/lib/apps"
 import { NotesList } from "@/components/notes-list"
 import { NoteEditor } from "@/components/note-editor"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, PanelLeftClose, PanelLeft } from "lucide-react"
 import Link from "next/link"
 
 export default function ScratchPage() {
@@ -15,6 +15,7 @@ export default function ScratchPage() {
   const [loading, setLoading] = useState(true)
   const [notes, setNotes] = useState<Note[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
   const router = useRouter()
 
   const supabase = createClient()
@@ -64,20 +65,28 @@ export default function ScratchPage() {
   return (
     <div className="flex h-screen bg-zinc-950">
       {/* Sidebar */}
-      <div className="flex w-72 flex-col border-r border-zinc-800 bg-zinc-900/50">
-        <div className="flex items-center gap-2 border-b border-zinc-800 px-4 py-3">
-          <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors">
+      <div className={`flex flex-col border-r border-zinc-800 bg-zinc-900/50 transition-all duration-200 ${sidebarOpen ? "w-72" : "w-12"}`}>
+        <div className="flex items-center gap-2 border-b border-zinc-800 px-3 py-3">
+          <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors shrink-0">
             <ArrowLeft className="size-4" />
           </Link>
-          <span className="text-sm font-medium text-zinc-100">Scratch</span>
+          <span className={`text-sm font-medium text-zinc-100 flex-1 ${sidebarOpen ? "" : "hidden"}`}>Scratch</span>
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors"
+          >
+            {sidebarOpen ? <PanelLeftClose className="size-4" /> : <PanelLeft className="size-4" />}
+          </button>
         </div>
-        <NotesList
-          notes={notes}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-          onCreate={handleCreate}
-          onDelete={handleDelete}
-        />
+        {sidebarOpen && (
+          <NotesList
+            notes={notes}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+            onCreate={handleCreate}
+            onDelete={handleDelete}
+          />
+        )}
       </div>
 
       {/* Editor */}

@@ -12,15 +12,6 @@ export interface App {
 
 export const apps: App[] = [
   {
-    slug: "hub",
-    name: "Hub",
-    description: "Your personal dashboard and launchpad",
-    status: "live",
-    access: "public",
-    color: "from-emerald-500 to-teal-600",
-    icon: "🌿",
-  },
-  {
     slug: "scratch",
     name: "Scratch",
     description: "Quick notes and scratchpad",
