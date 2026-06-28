@@ -87,7 +87,7 @@ export function NoteEditor({ noteId, initialTitle, initialContent }: NoteEditorP
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Start writing..."
-        className="flex-1 resize-none border-0 rounded-none bg-transparent p-6 text-sm leading-relaxed text-zinc-300 placeholder:text-zinc-600 focus-visible:ring-0"
+        className="flex-1 resize-none border-0 rounded-none bg-transparent p-6 text-base leading-relaxed text-zinc-300 placeholder:text-zinc-600 focus-visible:ring-0"
       />
     </div>
   )

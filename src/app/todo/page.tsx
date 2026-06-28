@@ -126,7 +126,7 @@ export default function TodoPage() {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAdd()}
           placeholder="Add a todo..."
-          className="flex-1 border-0 bg-transparent p-0 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none"
+          className="flex-1 border-0 bg-transparent p-0 text-base text-zinc-100 placeholder:text-zinc-600 focus:outline-none"
         />
         <button
           onClick={handleAdd}
