@@ -20,6 +20,15 @@ export const apps: App[] = [
     color: "from-emerald-500 to-teal-600",
     icon: "🌿",
   },
+  {
+    slug: "scratch",
+    name: "Scratch",
+    description: "Quick notes and scratchpad",
+    status: "live",
+    access: "owner",
+    color: "from-orange-500 to-red-500",
+    icon: "✏️",
+  },
 ]
 
 export const OWNER_EMAIL = "adam.j.tor@gmail.com"
