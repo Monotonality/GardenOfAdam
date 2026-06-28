@@ -159,13 +159,33 @@ export async function archiveHabit(id: string): Promise<void> {
   await supabase.from("habits").update({ status: "archived" }).eq("id", id)
 }
 
-export async function generateTodosForHabit(habit: Habit, daysAhead: number = 90): Promise<void> {
+export async function deleteFutureActiveTodos(habitId: string): Promise<void> {
   const supabase = createClient()
+  const now = new Date().toISOString()
+  await supabase
+    .from("todos")
+    .delete()
+    .eq("habit_id", habitId)
+    .eq("status", "active")
+    .gt("scheduled_at", now)
+}
 
-  const start = new Date()
-  start.setHours(0, 0, 0, 0)
-  const end = new Date()
-  end.setDate(end.getDate() + daysAhead)
+export async function updateHabitAndRegenerate(
+  id: string,
+  habit: Habit,
+  updates: Partial<HabitInput>
+): Promise<void> {
+  await updateHabit(id, updates)
+  await deleteFutureActiveTodos(id)
+}
+
+export async function generateTodosForHabit(habit: Habit): Promise<void> {
+  const supabase = createClient()
+  const now = new Date()
+
+  // Look back 48h and forward 1m (for clock drift) to catch any just-passed schedules
+  const start = new Date(now.getTime() - 48 * 60 * 60000)
+  const end = new Date(now.getTime() + 60000)
 
   const scheduledDates = computeScheduleDates(habit, start, end)
 
@@ -174,11 +194,11 @@ export async function generateTodosForHabit(habit: Habit, daysAhead: number = 90
     .select("scheduled_for")
     .eq("habit_id", habit.id)
     .gte("scheduled_for", start.toISOString().split("T")[0])
-    .lte("scheduled_for", end.toISOString().split("T")[0])
 
   const existingDates = new Set((existing ?? []).map((t: any) => t.scheduled_for))
 
   for (const dt of scheduledDates) {
+    if (dt > now) continue
     const dateStr = dt.toISOString().split("T")[0]
     if (existingDates.has(dateStr)) continue
 
@@ -196,11 +216,11 @@ export async function generateTodosForHabit(habit: Habit, daysAhead: number = 90
   }
 }
 
-export async function generateAllTodos(daysAhead: number = 90): Promise<void> {
+export async function generateAllTodos(): Promise<void> {
   const habits = await getHabits()
   for (const habit of habits) {
     if (habit.status !== "active") continue
-    await generateTodosForHabit(habit, daysAhead)
+    await generateTodosForHabit(habit)
   }
 }
 

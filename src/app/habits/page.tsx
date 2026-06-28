@@ -7,6 +7,7 @@ import {
   getHabits,
   createHabit,
   archiveHabit,
+  updateHabitAndRegenerate,
   generateTodosForHabit,
   generateAllTodos,
   getHabitGridData,
@@ -15,7 +16,7 @@ import {
   type DayStatus,
 } from "@/lib/habits"
 import { OWNER_EMAIL } from "@/lib/apps"
-import { ArrowLeft, Plus, X, Archive, Repeat, Clock } from "lucide-react"
+import { ArrowLeft, Plus, X, Archive, Repeat, Clock, Pencil } from "lucide-react"
 import Link from "next/link"
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -79,6 +80,7 @@ export default function HabitsPage() {
   const [habits, setHabits] = useState<Habit[]>([])
   const [gridData, setGridData] = useState<Map<string, DayStatus[]>>(new Map())
   const [showCreate, setShowCreate] = useState(false)
+  const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
   const router = useRouter()
 
   const supabase = createClient()
@@ -146,24 +148,33 @@ export default function HabitsPage() {
         )}
         {activeHabits.map((habit) => (
           <div key={habit.id} className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <h3 className="text-sm font-medium text-zinc-100">{habit.title}</h3>
-                <p className="text-xs text-zinc-500 mt-0.5">{formatSchedule(habit)}</p>
-                {habit.do_by_minutes && (
-                  <p className="text-xs text-zinc-600 mt-0.5">
-                    Complete within {habit.do_by_minutes >= 1440 ? `${habit.do_by_minutes / 1440}d` : habit.do_by_minutes >= 60 ? `${habit.do_by_minutes / 60}h` : `${habit.do_by_minutes}m`}
-                  </p>
-                )}
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <h3 className="text-sm font-medium text-zinc-100">{habit.title}</h3>
+                  <p className="text-xs text-zinc-500 mt-0.5">{formatSchedule(habit)}</p>
+                  {habit.do_by_minutes && (
+                    <p className="text-xs text-zinc-600 mt-0.5">
+                      Complete within {habit.do_by_minutes >= 1440 ? `${habit.do_by_minutes / 1440}d` : habit.do_by_minutes >= 60 ? `${habit.do_by_minutes / 60}h` : `${habit.do_by_minutes}m`}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setEditingHabit(habit)}
+                    className="shrink-0 rounded p-1.5 text-zinc-600 hover:text-zinc-300 transition-colors"
+                    title="Edit"
+                  >
+                    <Pencil className="size-4" />
+                  </button>
+                  <button
+                    onClick={() => handleArchive(habit.id)}
+                    className="shrink-0 rounded p-1.5 text-zinc-600 hover:text-zinc-300 transition-colors"
+                    title="Archive"
+                  >
+                    <Archive className="size-4" />
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={() => handleArchive(habit.id)}
-                className="shrink-0 rounded p-1.5 text-zinc-600 hover:text-zinc-300 transition-colors"
-                title="Archive"
-              >
-                <Archive className="size-4" />
-              </button>
-            </div>
             <ContributionGrid days={gridData.get(habit.id) ?? []} />
           </div>
         ))}
@@ -188,8 +199,18 @@ export default function HabitsPage() {
       {showCreate && (
         <CreateHabitDialog
           onClose={() => setShowCreate(false)}
-          onCreated={() => {
+          onSaved={() => {
             setShowCreate(false)
+            loadData()
+          }}
+        />
+      )}
+      {editingHabit && (
+        <CreateHabitDialog
+          habit={editingHabit}
+          onClose={() => setEditingHabit(null)}
+          onSaved={() => {
+            setEditingHabit(null)
             loadData()
           }}
         />
@@ -198,7 +219,7 @@ export default function HabitsPage() {
   )
 }
 
-function CreateHabitDialog({ onClose, onCreated }: { onClose: () => void; onCreated: () => void }) {
+function CreateHabitDialog({ habit, onClose, onSaved }: { habit?: Habit; onClose: () => void; onSaved: () => void }) {
   const [title, setTitle] = useState("")
   const [scheduleType, setScheduleType] = useState<"daily" | "weekly" | "monthly">("weekly")
   const [weeklyDays, setWeeklyDays] = useState<string[]>(["mon", "wed", "fri"])
@@ -210,6 +231,25 @@ function CreateHabitDialog({ onClose, onCreated }: { onClose: () => void; onCrea
   const [endDate, setEndDate] = useState("")
   const [maxOccurrences, setMaxOccurrences] = useState("30")
   const [saving, setSaving] = useState(false)
+  const isEditing = !!habit
+
+  useEffect(() => {
+    if (!habit) return
+    setTitle(habit.title)
+    setScheduleType(habit.schedule_type)
+    setTime(habit.schedule_time.slice(0, 5))
+    setDoByEnabled(!!habit.do_by_minutes)
+    setDoByHours(habit.do_by_minutes ? String(Math.round(habit.do_by_minutes / 60)) : "12")
+    setEndCondition(habit.end_condition)
+    setEndDate(habit.end_date ?? "")
+    setMaxOccurrences(habit.max_occurrences ? String(habit.max_occurrences) : "30")
+
+    if (habit.schedule_type === "weekly") {
+      setWeeklyDays(habit.schedule_days)
+    } else if (habit.schedule_type === "monthly") {
+      setMonthlyDays(habit.schedule_days)
+    }
+  }, [habit])
 
   const toggleDay = (day: string, type: "weekly" | "monthly" = "weekly") => {
     if (type === "weekly") {
@@ -223,7 +263,7 @@ function CreateHabitDialog({ onClose, onCreated }: { onClose: () => void; onCrea
     }
   }
 
-  const handleCreate = async () => {
+  const handleSave = async () => {
     if (!title.trim()) return
     setSaving(true)
 
@@ -238,19 +278,23 @@ function CreateHabitDialog({ onClose, onCreated }: { onClose: () => void; onCrea
       max_occurrences: endCondition === "occurrences" ? Number(maxOccurrences) : null,
     }
 
-    const habit = await createHabit(input)
-    if (habit) {
-      await generateTodosForHabit(habit)
-      onCreated()
+    if (isEditing && habit) {
+      await updateHabitAndRegenerate(habit.id, habit, input)
+    } else {
+      const created = await createHabit(input)
+      if (created) {
+        await generateTodosForHabit(created as Habit)
+      }
     }
     setSaving(false)
+    onSaved()
   }
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-12">
       <div className="w-full max-w-lg rounded-xl border border-zinc-700 bg-zinc-900 p-6 mx-4">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-base font-medium text-zinc-100">New Habit</h2>
+          <h2 className="text-base font-medium text-zinc-100">{isEditing ? "Edit Habit" : "New Habit"}</h2>
           <button onClick={onClose} className="text-zinc-500 hover:text-zinc-300 transition-colors">
             <X className="size-4" />
           </button>
@@ -469,11 +513,11 @@ function CreateHabitDialog({ onClose, onCreated }: { onClose: () => void; onCrea
           </div>
 
           <button
-            onClick={handleCreate}
+            onClick={handleSave}
             disabled={!title.trim() || saving}
             className="w-full rounded-lg bg-zinc-100 px-4 py-2.5 text-sm font-medium text-zinc-900 hover:bg-zinc-200 transition-colors disabled:opacity-30"
           >
-            {saving ? "Creating..." : "Create Habit"}
+            {saving ? "Saving..." : isEditing ? "Save Changes" : "Create Habit"}
           </button>
         </div>
       </div>
