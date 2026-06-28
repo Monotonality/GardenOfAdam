@@ -1,3 +1,6 @@
+import type { LucideIcon } from "lucide-react"
+import { StickyNote } from "lucide-react"
+
 export type AppAccess = "public" | "user" | "approved" | "owner"
 
 export interface App {
@@ -6,8 +9,7 @@ export interface App {
   description: string
   status: "planned" | "building" | "live"
   access: AppAccess
-  color: string
-  icon: string
+  icon: LucideIcon
 }
 
 export const apps: App[] = [
@@ -17,8 +19,7 @@ export const apps: App[] = [
     description: "Quick notes and scratchpad",
     status: "live",
     access: "owner",
-    color: "from-orange-500 to-red-500",
-    icon: "✏️",
+    icon: StickyNote,
   },
 ]
 

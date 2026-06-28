@@ -23,7 +23,7 @@ function buildPermissions(user: User | null): UserPermissions | null {
 
 export default function HubPage() {
   const [search, setSearch] = useState("")
-  const [view, setView] = useState<ViewMode>("grid")
+  const [view, setView] = useState<ViewMode>("list")
   const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
