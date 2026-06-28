@@ -18,11 +18,13 @@ export function NoteEditor({ noteId, initialTitle, initialContent }: NoteEditorP
   const [saved, setSaved] = useState(true)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isInitialMount = useRef(true)
+  const titleRef = useRef(title)
+  const contentRef = useRef(content)
+  const noteIdRef = useRef(noteId)
 
-  const save = useCallback(async (t: string, c: string) => {
-    await updateNote(noteId, { title: t, content: c })
-    setSaved(true)
-  }, [noteId])
+  titleRef.current = title
+  contentRef.current = content
+  noteIdRef.current = noteId
 
   useEffect(() => {
     setTitle(initialTitle)
@@ -37,17 +39,26 @@ export function NoteEditor({ noteId, initialTitle, initialContent }: NoteEditorP
     }
 
     setSaved(false)
-
     if (timerRef.current) clearTimeout(timerRef.current)
 
-    timerRef.current = setTimeout(() => {
-      save(title, content)
-    }, 1000)
+    timerRef.current = setTimeout(async () => {
+      await updateNote(noteIdRef.current, { title: titleRef.current, content: contentRef.current })
+      setSaved(true)
+    }, 1500)
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
     }
-  }, [title, content, save])
+  }, [title, content])
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current)
+        updateNote(noteIdRef.current, { title: titleRef.current, content: contentRef.current })
+      }
+    }
+  }, [])
 
   return (
     <div className="flex h-full flex-col">
@@ -66,12 +77,12 @@ export function NoteEditor({ noteId, initialTitle, initialContent }: NoteEditorP
           )}
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      <div className="flex-1 overflow-y-auto px-8 py-6">
         <Input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Note title..."
-          className="mb-4 border-0 bg-transparent p-0 text-xl font-semibold text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-0"
+          className="mb-6 border-0 bg-transparent p-0 text-xl font-semibold text-zinc-100 placeholder:text-zinc-600 focus-visible:ring-0"
         />
         <Textarea
           value={content}
