@@ -8,6 +8,7 @@ export interface Todo {
   habit_id: string | null
   due_by: string | null
   scheduled_for: string | null
+  scheduled_at: string | null
   created_at: string
   updated_at: string
   completed_at: string | null
@@ -18,6 +19,7 @@ export interface TodoOptions {
   habit_id?: string
   due_by?: string | null
   scheduled_for?: string | null
+  scheduled_at?: string | null
 }
 
 export async function getTodos(): Promise<Todo[]> {
@@ -48,6 +50,7 @@ export async function createTodo(title: string, options?: TodoOptions): Promise<
   if (options?.habit_id) insert.habit_id = options.habit_id
   if (options?.due_by) insert.due_by = options.due_by
   if (options?.scheduled_for) insert.scheduled_for = options.scheduled_for
+  if (options?.scheduled_at) insert.scheduled_at = options.scheduled_at
 
   const { data } = await supabase
     .from("todos")

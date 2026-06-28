@@ -94,7 +94,8 @@ export default function TodoPage() {
     )
   }
 
-  const active = todos.filter((t) => t.status === "active")
+  const now = new Date()
+  const active = todos.filter((t) => t.status === "active" && (!t.habit_id || (t.scheduled_at && new Date(t.scheduled_at) <= now)))
   const completed = todos.filter((t) => t.status === "completed")
   const failed = todos.filter((t) => t.status === "failed")
 

@@ -146,6 +146,7 @@ export async function generateTodosForHabit(habit: Habit, daysAhead: number = 90
     await createTodo(habit.title, {
       habit_id: habit.id,
       scheduled_for: dateStr,
+      scheduled_at: dt.toISOString(),
       due_by: dueBy,
     })
   }
