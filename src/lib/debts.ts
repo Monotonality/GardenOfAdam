@@ -10,11 +10,13 @@ export interface Debt {
   created_at: string
   updated_at: string
   cleared_at: string | null
+  debt_date: string
 }
 
 export interface DebtInput {
   person_name: string
   amount: number
+  debt_date: string
   description?: string | null
 }
 
@@ -37,6 +39,7 @@ export async function createDebt(input: DebtInput): Promise<Debt | null> {
       user_id: user.id,
       person_name: input.person_name,
       amount: input.amount,
+      debt_date: input.debt_date,
       description: input.description ?? null,
     })
     .select()

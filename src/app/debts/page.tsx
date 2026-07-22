@@ -16,6 +16,21 @@ function formatAmount(amount: number): string {
   return `$${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
 
+function calculateInterest(amount: number, dateStr: string): number {
+  const debtDate = new Date(dateStr)
+  const now = new Date()
+  const months = (now.getFullYear() - debtDate.getFullYear()) * 12
+    + (now.getMonth() - debtDate.getMonth())
+    + (now.getDate() - debtDate.getDate()) / 30
+  if (months <= 0) return 0
+  return amount * (Math.pow(1.05, months) - 1)
+}
+
+function todayISO(): string {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`
+}
+
 export default function DebtsPage() {
   const [loading, setLoading] = useState(true)
   const [debts, setDebts] = useState<Debt[]>([])
@@ -24,6 +39,7 @@ export default function DebtsPage() {
   const [showCreate, setShowCreate] = useState(false)
   const [personName, setPersonName] = useState("")
   const [amount, setAmount] = useState("")
+  const [debtDate, setDebtDate] = useState(todayISO())
   const [description, setDescription] = useState("")
   const [saving, setSaving] = useState(false)
   const router = useRouter()
@@ -47,8 +63,10 @@ export default function DebtsPage() {
   const cleared = debts.filter((d) => d.status === "cleared")
 
   const cumulativeByPerson = new Map<string, number>()
+  const cumulativeInterestByPerson = new Map<string, number>()
   for (const d of active) {
     cumulativeByPerson.set(d.person_name, (cumulativeByPerson.get(d.person_name) ?? 0) + d.amount)
+    cumulativeInterestByPerson.set(d.person_name, (cumulativeInterestByPerson.get(d.person_name) ?? 0) + calculateInterest(d.amount, d.debt_date))
   }
 
   const handleCreate = async () => {
@@ -57,11 +75,13 @@ export default function DebtsPage() {
     const debt = await createDebt({
       person_name: personName.trim(),
       amount: Number(amount),
+      debt_date: debtDate,
       description: description.trim() || null,
     })
     if (debt) setDebts((prev) => [debt, ...prev])
     setPersonName("")
     setAmount("")
+    setDebtDate(todayISO())
     setDescription("")
     setShowCreate(false)
     setSaving(false)
@@ -135,6 +155,8 @@ export default function DebtsPage() {
         {active.map((debt) => {
           const cumul = cumulativeByPerson.get(debt.person_name)
           const showCumul = cumul !== undefined && cumul > debt.amount
+          const interest = calculateInterest(debt.amount, debt.debt_date)
+          const total = debt.amount + interest
           return (
             <div key={debt.id} className="flex items-center gap-3 border-b border-zinc-800/50 px-4 py-2.5 transition-colors hover:bg-zinc-800/30">
               <input
@@ -148,7 +170,7 @@ export default function DebtsPage() {
                   <span className="text-sm font-medium text-zinc-100 truncate">{debt.person_name}</span>
                   {showCumul && (
                     <span className="shrink-0 text-[10px] text-zinc-500">
-                      ({formatAmount(cumul!)} total)
+                      ({formatAmount(cumul! + (cumulativeInterestByPerson.get(debt.person_name) ?? 0))} total)
                     </span>
                   )}
                 </div>
@@ -156,10 +178,15 @@ export default function DebtsPage() {
                   {debt.description && (
                     <span className="text-xs text-zinc-400 truncate">{debt.description}</span>
                   )}
-                  <span className="text-xs text-zinc-600">{formatDate(debt.created_at)}</span>
+                  <span className="text-xs text-zinc-600">{formatDate(debt.debt_date)}</span>
                 </div>
               </div>
-              <span className="shrink-0 text-sm font-medium text-zinc-200">{formatAmount(debt.amount)}</span>
+              <div className="shrink-0 text-right">
+                <div className="text-sm font-medium text-zinc-200">{formatAmount(total)}</div>
+                {interest > 0 && (
+                  <div className="text-[10px] text-zinc-500">+{formatAmount(interest)} int.</div>
+                )}
+              </div>
               <button
                 onClick={() => handleDelete(debt.id)}
                 className="shrink-0 rounded p-1 text-zinc-600 hover:text-red-400 transition-colors md:opacity-0 md:group-hover:opacity-100"
@@ -190,7 +217,7 @@ export default function DebtsPage() {
                     {debt.description && (
                       <span className="text-xs text-zinc-600 truncate">{debt.description}</span>
                     )}
-                    <span className="text-xs text-zinc-700">{formatDate(debt.created_at)}</span>
+                    <span className="text-xs text-zinc-700">{formatDate(debt.debt_date)}</span>
                   </div>
                 </div>
                 <span className="shrink-0 text-sm text-zinc-500 line-through">{formatAmount(debt.amount)}</span>
@@ -238,6 +265,16 @@ export default function DebtsPage() {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   placeholder="0.00"
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-zinc-500 mb-1.5">Date</label>
+                <input
+                  type="date"
+                  value={debtDate}
+                  onChange={(e) => setDebtDate(e.target.value)}
                   className="w-full rounded-lg border border-zinc-700 bg-zinc-800 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500"
                 />
               </div>
