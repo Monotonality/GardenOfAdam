@@ -216,16 +216,12 @@ export default function HomePage() {
         <header className="border-b border-zinc-800 pb-8">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Adam Torres</h1>
           <p className="mt-3 text-base text-zinc-300">
-            Software engineer &amp; data analyst — I build tools, pull signal out of data, and
-            ship things that measurably move the needle.
+            Software engineer &amp; data analyst — Motorola Solutions · UT Dallas · Harvard ·
+            Dean&apos;s Council
           </p>
           <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm text-zinc-500">
-            <span>15196 Elderflower Lane, Frisco, TX 75035</span>
             <a href="mailto:adam.j.tor@gmail.com" className="underline-offset-4 hover:text-zinc-300 hover:underline">
               adam.j.tor@gmail.com
-            </a>
-            <a href="tel:+14699809044" className="underline-offset-4 hover:text-zinc-300 hover:underline">
-              +1 (469) 980-9044
             </a>
           </div>
         </header>
