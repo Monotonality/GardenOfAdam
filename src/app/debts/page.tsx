@@ -44,20 +44,19 @@ export default function DebtsPage() {
   const [saving, setSaving] = useState(false)
   const router = useRouter()
 
-  const supabase = createClient()
-
   useEffect(() => {
+    const supabase = createClient()
     supabase.auth.getUser().then(async ({ data }) => {
       const u = data.user
       if (!u || u.email !== OWNER_EMAIL) {
-        router.push("/auth/login")
+        router.push("/auth/login?next=/debts")
         return
       }
       const all = await getDebts()
       setDebts(all)
       setLoading(false)
     })
-  }, [])
+  }, [router])
 
   const active = debts.filter((d) => d.status === "active")
   const cleared = debts.filter((d) => d.status === "cleared")
@@ -123,7 +122,7 @@ export default function DebtsPage() {
   return (
     <div className="mx-auto flex min-h-screen max-w-2xl flex-col bg-zinc-950">
       <div className="flex items-center gap-3 border-b border-zinc-800 px-4 py-3">
-        <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors">
+        <Link href="/apps" className="text-zinc-500 hover:text-zinc-300 transition-colors">
           <ArrowLeft className="size-4" />
         </Link>
         <h1 className="text-sm font-medium text-zinc-100">Debts</h1>

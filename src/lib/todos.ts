@@ -45,7 +45,14 @@ export async function createTodo(title: string, options?: TodoOptions): Promise<
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return null
 
-  const insert: Record<string, any> = { user_id: user.id, title }
+  const insert: {
+    user_id: string
+    title: string
+    habit_id?: string
+    due_by?: string | null
+    scheduled_for?: string | null
+    scheduled_at?: string | null
+  } = { user_id: user.id, title }
   if (options?.habit_id) insert.habit_id = options.habit_id
   if (options?.due_by) insert.due_by = options.due_by
   if (options?.scheduled_for) insert.scheduled_for = options.scheduled_for

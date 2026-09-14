@@ -1,6 +1,18 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts"
 import { createClient } from "jsr:@supabase/supabase-js"
 
+interface Habit {
+  id: string
+  user_id: string
+  title: string
+  schedule_type: string
+  schedule_days: string[]
+  schedule_time: string
+  do_by_minutes: number | null
+  end_date: string | null
+  max_occurrences: number | null
+}
+
 const DAY_NAMES = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
 
 function getLastDay(year: number, month: number): number {
@@ -32,7 +44,7 @@ function getNthDayOfMonth(year: number, month: number, occurrence: string, dayOf
   return null
 }
 
-function matchesSchedule(habit: any, date: Date): boolean {
+function matchesSchedule(habit: Habit, date: Date): boolean {
   if (habit.schedule_type === "daily") return true
   if (habit.schedule_type === "weekly") {
     return habit.schedule_days.includes(DAY_NAMES[date.getDay()])
@@ -58,12 +70,12 @@ function matchesSchedule(habit: any, date: Date): boolean {
   return false
 }
 
-function isAfterEnd(habit: any, date: Date): boolean {
+function isAfterEnd(habit: Habit, date: Date): boolean {
   if (habit.end_date && date > new Date(habit.end_date)) return true
   return false
 }
 
-Deno.serve(async (_req: Request) => {
+Deno.serve(async () => {
   const supabase = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
@@ -81,7 +93,7 @@ Deno.serve(async (_req: Request) => {
   let totalGenerated = 0
   const now = new Date()
   const lookbackStart = new Date(now.getTime() - 10 * 60 * 1000)
-  const allHabitIds = habits.map((h: any) => h.id)
+  const allHabitIds = habits.map((h) => h.id)
 
   const { data: existingTodos } = await supabase
     .from("todos")

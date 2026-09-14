@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -47,7 +48,7 @@ export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutR
   }
 
   return (
-    <div className="flex flex-col gap-6" {...props}>
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="border-zinc-800 bg-zinc-900">
         <CardHeader>
           <CardTitle className="text-2xl text-zinc-100">Sign up</CardTitle>

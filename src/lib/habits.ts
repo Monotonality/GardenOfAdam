@@ -198,7 +198,7 @@ export async function generateTodosForHabit(habit: Habit): Promise<void> {
     .eq("habit_id", habit.id)
     .gte("scheduled_for", start.toISOString().split("T")[0])
 
-  const existingDates = new Set((existing ?? []).map((t: any) => t.scheduled_for))
+  const existingDates = new Set((existing ?? []).map((t) => t.scheduled_for))
 
   for (const dt of scheduledDates) {
     if (dt > now) continue

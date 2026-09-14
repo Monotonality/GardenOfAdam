@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -28,7 +29,9 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         password,
       })
       if (error) throw error
-      router.push("/")
+      const raw = new URLSearchParams(window.location.search).get("next")
+      const next = raw && raw.startsWith("/") && !raw.startsWith("//") ? raw : "/apps"
+      router.push(next)
       router.refresh()
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred")
@@ -38,7 +41,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
   }
 
   return (
-    <div className="flex flex-col gap-6" {...props}>
+    <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="border-zinc-800 bg-zinc-900">
         <CardHeader>
           <CardTitle className="text-2xl text-zinc-100">Login</CardTitle>

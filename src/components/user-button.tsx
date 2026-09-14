@@ -14,7 +14,7 @@ import type { User as SupabaseUser } from "@supabase/supabase-js"
 
 export function UserButton() {
   const [user, setUser] = useState<SupabaseUser | null>(null)
-  const supabase = createClient()
+  const [supabase] = useState(() => createClient())
 
   useEffect(() => {
     const getUser = async () => {
@@ -28,7 +28,7 @@ export function UserButton() {
     })
 
     return () => listener.subscription.unsubscribe()
-  }, [])
+  }, [supabase])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()

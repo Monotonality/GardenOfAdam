@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { updateNote } from "@/lib/notes"
@@ -18,19 +18,11 @@ export function NoteEditor({ noteId, initialTitle, initialContent }: NoteEditorP
   const [saved, setSaved] = useState(true)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const isInitialMount = useRef(true)
-  const titleRef = useRef(title)
-  const contentRef = useRef(content)
-  const noteIdRef = useRef(noteId)
-
-  titleRef.current = title
-  contentRef.current = content
-  noteIdRef.current = noteId
+  const latest = useRef({ title, content })
 
   useEffect(() => {
-    setTitle(initialTitle)
-    setContent(initialContent)
-    setSaved(true)
-  }, [noteId, initialTitle, initialContent])
+    latest.current = { title, content }
+  }, [title, content])
 
   useEffect(() => {
     if (isInitialMount.current) {
@@ -42,23 +34,23 @@ export function NoteEditor({ noteId, initialTitle, initialContent }: NoteEditorP
     if (timerRef.current) clearTimeout(timerRef.current)
 
     timerRef.current = setTimeout(async () => {
-      await updateNote(noteIdRef.current, { title: titleRef.current, content: contentRef.current })
+      await updateNote(noteId, { title, content })
       setSaved(true)
     }, 1500)
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
     }
-  }, [title, content])
+  }, [title, content, noteId])
 
   useEffect(() => {
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current)
-        updateNote(noteIdRef.current, { title: titleRef.current, content: contentRef.current })
+        updateNote(noteId, latest.current)
       }
     }
-  }, [])
+  }, [noteId])
 
   return (
     <div className="flex h-full flex-col">

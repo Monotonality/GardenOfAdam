@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { getNotes, createNote, deleteNote, type Note } from "@/lib/notes"
@@ -11,15 +11,12 @@ import { ArrowLeft, PanelLeftClose, PanelLeft, ExternalLink } from "lucide-react
 import Link from "next/link"
 
 export default function ScratchPage() {
-  const [user, setUser] = useState<any | null>(null)
   const [loading, setLoading] = useState(true)
   const [notes, setNotes] = useState<Note[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
   const router = useRouter()
-
-  const supabase = createClient()
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
@@ -29,22 +26,17 @@ export default function ScratchPage() {
   }, [])
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(async ({ data }) => {
       const u = data.user
       if (!u || u.email !== OWNER_EMAIL) {
-        router.push("/auth/login")
+        router.push("/auth/login?next=/scratch")
         return
       }
-      setUser(u)
-      loadNotes()
+      setNotes(await getNotes())
       setLoading(false)
     })
-  }, [])
-
-  const loadNotes = async () => {
-    const data = await getNotes()
-    setNotes(data)
-  }
+  }, [router])
 
   const handleCreate = async () => {
     const note = await createNote()
@@ -83,7 +75,7 @@ export default function ScratchPage() {
         <div className={`flex items-center border-b border-zinc-800 py-3 ${sidebarOpen ? "gap-2 px-3" : "justify-center px-0"}`}>
           {sidebarOpen ? (
             <>
-              <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors shrink-0">
+              <Link href="/apps" className="text-zinc-500 hover:text-zinc-300 transition-colors shrink-0">
                 <ArrowLeft className="size-4" />
               </Link>
               <span className="text-sm font-medium text-zinc-100 flex-1">Scratch</span>
@@ -129,7 +121,7 @@ export default function ScratchPage() {
               <span className="text-sm font-medium text-zinc-100 flex-1">{selectedNote.title}</span>
             )}
             <span className="text-sm font-medium text-zinc-100 truncate flex-1 md:hidden">{selectedNote.title}</span>
-            <Link href="/" className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors">
+            <Link href="/apps" className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors">
               <ExternalLink className="size-4" />
             </Link>
           </div>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useRef } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import {
@@ -14,7 +14,7 @@ import {
   type DayStatus,
 } from "@/lib/habits"
 import { OWNER_EMAIL } from "@/lib/apps"
-import { ArrowLeft, Plus, X, Archive, Repeat, Clock, Pencil } from "lucide-react"
+import { ArrowLeft, Plus, X, Archive, Pencil } from "lucide-react"
 import Link from "next/link"
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
@@ -83,21 +83,7 @@ export default function HabitsPage() {
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null)
   const router = useRouter()
 
-  const supabase = createClient()
-
-  useEffect(() => {
-    supabase.auth.getUser().then(async ({ data }) => {
-      const u = data.user
-      if (!u || u.email !== OWNER_EMAIL) {
-        router.push("/auth/login")
-        return
-      }
-      await loadData()
-      setLoading(false)
-    })
-  }, [])
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     const habitsData = await getHabits()
     setHabits(habitsData)
     const map = new Map<string, DayStatus[]>()
@@ -107,7 +93,20 @@ export default function HabitsPage() {
       }
     }
     setGridData(map)
-  }
+  }, [])
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(async ({ data }) => {
+      const u = data.user
+      if (!u || u.email !== OWNER_EMAIL) {
+        router.push("/auth/login?next=/habits")
+        return
+      }
+      await loadData()
+      setLoading(false)
+    })
+  }, [router, loadData])
 
   const handleArchive = async (id: string) => {
     await archiveHabit(id)
@@ -128,7 +127,7 @@ export default function HabitsPage() {
   return (
     <div className="mx-auto flex min-h-screen max-w-4xl flex-col bg-zinc-950">
       <div className="flex items-center gap-3 border-b border-zinc-800 px-4 py-3">
-        <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors">
+        <Link href="/apps" className="text-zinc-500 hover:text-zinc-300 transition-colors">
           <ArrowLeft className="size-4" />
         </Link>
         <h1 className="flex-1 text-sm font-medium text-zinc-100">Habits</h1>
@@ -197,6 +196,7 @@ export default function HabitsPage() {
 
       {showCreate && (
         <CreateHabitDialog
+          key="create"
           onClose={() => setShowCreate(false)}
           onSaved={() => {
             setShowCreate(false)
@@ -206,6 +206,7 @@ export default function HabitsPage() {
       )}
       {editingHabit && (
         <CreateHabitDialog
+          key={editingHabit.id}
           habit={editingHabit}
           onClose={() => setEditingHabit(null)}
           onSaved={() => {
@@ -219,36 +220,28 @@ export default function HabitsPage() {
 }
 
 function CreateHabitDialog({ habit, onClose, onSaved }: { habit?: Habit; onClose: () => void; onSaved: () => void }) {
-  const [title, setTitle] = useState("")
-  const [scheduleType, setScheduleType] = useState<"daily" | "weekly" | "monthly">("weekly")
-  const [weeklyDays, setWeeklyDays] = useState<string[]>(["mon", "wed", "fri"])
-  const [monthlyDays, setMonthlyDays] = useState<string[]>(["start"])
-  const [time, setTime] = useState("08:00")
-  const [doByEnabled, setDoByEnabled] = useState(false)
-  const [doByHours, setDoByHours] = useState("12")
-  const [endCondition, setEndCondition] = useState<"indefinite" | "date" | "occurrences">("indefinite")
-  const [endDate, setEndDate] = useState("")
-  const [maxOccurrences, setMaxOccurrences] = useState("30")
+  const [title, setTitle] = useState(habit?.title ?? "")
+  const [scheduleType, setScheduleType] = useState<"daily" | "weekly" | "monthly">(habit?.schedule_type ?? "weekly")
+  const [weeklyDays, setWeeklyDays] = useState<string[]>(
+    habit?.schedule_type === "weekly" ? habit.schedule_days : ["mon", "wed", "fri"]
+  )
+  const [monthlyDays, setMonthlyDays] = useState<string[]>(
+    habit?.schedule_type === "monthly" ? habit.schedule_days : ["start"]
+  )
+  const [time, setTime] = useState(habit ? habit.schedule_time.slice(0, 5) : "08:00")
+  const [doByEnabled, setDoByEnabled] = useState(!!habit?.do_by_minutes)
+  const [doByHours, setDoByHours] = useState(
+    habit?.do_by_minutes ? String(Math.round(habit.do_by_minutes / 60)) : "12"
+  )
+  const [endCondition, setEndCondition] = useState<"indefinite" | "date" | "occurrences">(
+    habit?.end_condition ?? "indefinite"
+  )
+  const [endDate, setEndDate] = useState(habit?.end_date ?? "")
+  const [maxOccurrences, setMaxOccurrences] = useState(
+    habit?.max_occurrences ? String(habit.max_occurrences) : "30"
+  )
   const [saving, setSaving] = useState(false)
   const isEditing = !!habit
-
-  useEffect(() => {
-    if (!habit) return
-    setTitle(habit.title)
-    setScheduleType(habit.schedule_type)
-    setTime(habit.schedule_time.slice(0, 5))
-    setDoByEnabled(!!habit.do_by_minutes)
-    setDoByHours(habit.do_by_minutes ? String(Math.round(habit.do_by_minutes / 60)) : "12")
-    setEndCondition(habit.end_condition)
-    setEndDate(habit.end_date ?? "")
-    setMaxOccurrences(habit.max_occurrences ? String(habit.max_occurrences) : "30")
-
-    if (habit.schedule_type === "weekly") {
-      setWeeklyDays(habit.schedule_days)
-    } else if (habit.schedule_type === "monthly") {
-      setMonthlyDays(habit.schedule_days)
-    }
-  }, [habit])
 
   const toggleDay = (day: string, type: "weekly" | "monthly" = "weekly") => {
     if (type === "weekly") {

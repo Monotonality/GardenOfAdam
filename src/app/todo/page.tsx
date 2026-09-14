@@ -41,24 +41,18 @@ export default function TodoPage() {
   const [showFailed, setShowFailed] = useState(false)
   const router = useRouter()
 
-  const supabase = createClient()
-
   useEffect(() => {
+    const supabase = createClient()
     supabase.auth.getUser().then(async ({ data }) => {
       const u = data.user
       if (!u || u.email !== OWNER_EMAIL) {
-        router.push("/auth/login")
+        router.push("/auth/login?next=/todo")
         return
       }
-      await loadTodos()
+      setTodos(await getActiveTodos())
       setLoading(false)
     })
-  }, [])
-
-  const loadTodos = async () => {
-    const data = await getActiveTodos()
-    setTodos(data)
-  }
+  }, [router])
 
   const handleAdd = async () => {
     const title = input.trim()
@@ -138,7 +132,7 @@ export default function TodoPage() {
   return (
     <div className="mx-auto flex min-h-screen max-w-2xl flex-col bg-zinc-950">
       <div className="flex items-center gap-3 border-b border-zinc-800 px-4 py-3">
-        <Link href="/" className="text-zinc-500 hover:text-zinc-300 transition-colors">
+        <Link href="/apps" className="text-zinc-500 hover:text-zinc-300 transition-colors">
           <ArrowLeft className="size-4" />
         </Link>
         <h1 className="text-sm font-medium text-zinc-100">Todo</h1>

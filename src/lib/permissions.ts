@@ -1,4 +1,4 @@
-import type { App, AppAccess } from "./apps"
+import type { App } from "./apps"
 
 export type PermissionLevel = "public" | "user" | "approved" | "owner"
 

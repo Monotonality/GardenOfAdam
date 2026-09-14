@@ -3,7 +3,7 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: "Garden of Adam",
-  description: "A personal collection of web apps and tools",
+  description: "Adam's portfolio — small, focused web apps and tools",
 }
 
 export default function RootLayout({
