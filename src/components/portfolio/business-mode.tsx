@@ -6,6 +6,7 @@ import {
   businessMemberships,
   impactStats,
 } from "@/lib/portfolio/business"
+import { BrandStrip } from "./brand-strip"
 import { EngagementReader } from "./engagement-reader"
 
 export function BusinessMode() {
@@ -31,6 +32,8 @@ export function BusinessMode() {
           ))}
         </div>
       </section>
+
+      <BrandStrip />
 
       <section className="mt-14 rounded-2xl border border-border bg-card p-6 sm:p-8">
         <h2 className="font-serif text-xl font-semibold tracking-tight">Measured impact</h2>

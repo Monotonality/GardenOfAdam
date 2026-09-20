@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { flushSync } from "react-dom"
 import type { Mode } from "@/lib/portfolio/technical"
 import { SiteFooter } from "./site-footer"
@@ -11,10 +11,26 @@ import { BusinessMode } from "./business-mode"
 
 export function PortfolioScaffold({ initialMode }: { initialMode: Mode }) {
   const [mode, setMode] = useState<Mode>(initialMode)
+  const mainRef = useRef<HTMLElement>(null)
+  const isFirstRender = useRef(true)
+  const supportsViewTransition =
+    typeof document !== "undefined" && "startViewTransition" in document
 
   useEffect(() => {
     document.documentElement.classList.toggle("theme-business", mode === "business")
-  }, [mode])
+
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    if (supportsViewTransition) return
+
+    const el = mainRef.current
+    if (!el) return
+    el.classList.remove("mode-swap-fade")
+    void el.offsetWidth
+    el.classList.add("mode-swap-fade")
+  }, [mode, supportsViewTransition])
 
   function switchMode(next: Mode) {
     if (next === mode) return
@@ -26,7 +42,7 @@ export function PortfolioScaffold({ initialMode }: { initialMode: Mode }) {
       window.history.replaceState(null, "", url)
     }
 
-    if (typeof document !== "undefined" && "startViewTransition" in document) {
+    if (supportsViewTransition) {
       document.startViewTransition(() => flushSync(apply))
     } else {
       apply()
@@ -36,7 +52,9 @@ export function PortfolioScaffold({ initialMode }: { initialMode: Mode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader mode={mode} toggle={<ModeToggle mode={mode} onChange={switchMode} />} />
-      <main className="flex-1">{mode === "business" ? <BusinessMode /> : <TechnicalMode />}</main>
+      <main ref={mainRef} className="flex-1">
+        {mode === "business" ? <BusinessMode /> : <TechnicalMode />}
+      </main>
       <SiteFooter />
     </div>
   )

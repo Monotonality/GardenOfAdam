@@ -127,10 +127,10 @@ body {
 
 /* View Transitions (same-route crossfade between modes) */
 ::view-transition-old(root) {
-  animation: 280ms ease both mode-fade-out;
+  animation: 320ms ease both mode-fade-out;
 }
 ::view-transition-new(root) {
-  animation: 280ms ease both mode-fade-in;
+  animation: 320ms ease both mode-fade-in;
 }
 
 @keyframes mode-fade-out {
@@ -138,13 +138,45 @@ body {
     opacity: 1;
   }
   to {
-    opacity: 0.4;
+    opacity: 0;
   }
 }
 
 @keyframes mode-fade-in {
   from {
-    opacity: 0.4;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Brand marquee — continuous logo rotation */
+.marquee {
+  overflow: hidden;
+}
+.marquee-track {
+  animation: marquee 36s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Fallback fade for browsers without View Transitions support */
+.mode-swap-fade {
+  animation: mode-swap-in 240ms ease both;
+}
+
+@keyframes mode-swap-in {
+  from {
+    opacity: 0;
   }
   to {
     opacity: 1;
@@ -176,7 +208,11 @@ body {
   body {
     transition: none;
   }
-  .panel-reveal {
+  .panel-reveal,
+  .mode-swap-fade {
+    animation: none;
+  }
+  .marquee-track {
     animation: none;
   }
 }

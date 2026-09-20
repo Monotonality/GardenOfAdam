@@ -1,11 +1,8 @@
-import Link from "next/link"
-import { apps } from "@/lib/apps"
 import { technicalIntro, technicalProjects } from "@/lib/portfolio/technical"
+import { GitHubStreak } from "./github-streak"
 import { ProjectExplorer } from "./project-explorer"
 
 export function TechnicalMode() {
-  const liveApps = apps.filter((app) => app.status === "live")
-
   return (
     <div className="mx-auto max-w-5xl px-6 py-14 sm:py-20">
       <section>
@@ -27,28 +24,7 @@ export function TechnicalMode() {
         </div>
         <ProjectExplorer projects={technicalProjects} />
 
-      {liveApps.length > 0 && (
-        <section className="mt-16">
-          <h2 className="font-mono text-sm text-muted-foreground">
-            <span className="text-terminal">##</span> personal tools
-          </h2>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {liveApps.map((app) => {
-              const Icon = app.icon
-              return (
-                <Link
-                  key={app.slug}
-                  href={`/${app.slug}`}
-                  className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm transition-colors hover:border-ring/40"
-                >
-                  <Icon className="size-4 text-terminal" />
-                  {app.name}
-                </Link>
-              )
-            })}
-          </div>
-        </section>
-      )}
+      <GitHubStreak />
     </div>
   )
 }
