@@ -10,116 +10,119 @@ export interface Category {
 }
 
 const skills: Skill[] = [
-  // Languages
+  // Data, ML & AI
+  { title: 'Scikit-learn', competency: 4, category: ['Data, ML & AI'] },
+  { title: 'Pandas', competency: 5, category: ['Data, ML & AI'] },
+  { title: 'NumPy', competency: 4, category: ['Data, ML & AI'] },
+  { title: 'Random Forest', competency: 4, category: ['Data, ML & AI'] },
+  { title: 'Gradient Boosting', competency: 4, category: ['Data, ML & AI'] },
   {
-    title: 'Python',
-    competency: 5,
-    category: ['Languages', 'ML Engineering'],
+    title: 'Supervised Learning',
+    competency: 4,
+    category: ['Data, ML & AI'],
   },
+  {
+    title: 'Feature Importance Analysis',
+    competency: 4,
+    category: ['Data, ML & AI'],
+  },
+  {
+    title: 'Hypothesis Testing',
+    competency: 4,
+    category: ['Data, ML & AI'],
+  },
+  {
+    title: 'TF-IDF Vectorization',
+    competency: 4,
+    category: ['Data, ML & AI'],
+  },
+  { title: 'Cosine Similarity', competency: 4, category: ['Data, ML & AI'] },
+  { title: 'Vector Databases', competency: 3, category: ['Data, ML & AI'] },
+  { title: 'RAG', competency: 3, category: ['Data, ML & AI'] },
+  // Programming & Frameworks
+  { title: 'Python', competency: 5, category: ['Programming & Frameworks'] },
+  { title: 'R', competency: 3, category: ['Programming & Frameworks'] },
+  { title: 'SQL', competency: 4, category: ['Programming & Frameworks'] },
   {
     title: 'TypeScript',
-    competency: 5,
-    category: ['Languages', 'Web Development'],
-  },
-  {
-    title: 'SQL',
     competency: 4,
-    category: ['Languages', 'Databases'],
-  },
-  // AI & LLM
-  {
-    title: 'AI Agents',
-    competency: 5,
-    category: ['ML Engineering'],
+    category: ['Programming & Frameworks'],
   },
   {
-    title: 'LLM Evaluation',
-    competency: 5,
-    category: ['ML Engineering'],
-  },
-  {
-    title: 'AI Red-teaming',
-    competency: 5,
-    category: ['ML Engineering'],
-  },
-  {
-    title: 'LLM APIs',
-    competency: 5,
-    category: ['ML Engineering'],
-  },
-  {
-    title: 'RAG',
+    title: 'JavaScript',
     competency: 4,
-    category: ['ML Engineering'],
+    category: ['Programming & Frameworks'],
   },
-  {
-    title: 'Prompt Engineering',
-    competency: 4,
-    category: ['ML Engineering'],
-  },
-  {
-    title: 'Vector Databases',
-    competency: 4,
-    category: ['ML Engineering', 'Databases'],
-  },
-  {
-    title: 'PyTorch',
-    competency: 4,
-    category: ['ML Engineering'],
-  },
-  {
-    title: 'Pandas',
-    competency: 5,
-    category: ['ML Engineering', 'Data Engineering'],
-  },
-  // Web Development
-  {
-    title: 'Node.js',
-    competency: 5,
-    category: ['Web Development'],
-  },
-  {
-    title: 'FastAPI',
-    competency: 4,
-    category: ['Web Development'],
-  },
-  {
-    title: 'Next.js',
-    competency: 3,
-    category: ['Web Development'],
-  },
-  // Databases
+  { title: 'C++', competency: 3, category: ['Programming & Frameworks'] },
+  { title: 'Java', competency: 3, category: ['Programming & Frameworks'] },
+  { title: 'Next.js', competency: 4, category: ['Programming & Frameworks'] },
+  { title: 'React', competency: 4, category: ['Programming & Frameworks'] },
+  { title: 'Django', competency: 3, category: ['Programming & Frameworks'] },
+  { title: 'HTML/CSS', competency: 4, category: ['Programming & Frameworks'] },
+  { title: 'SCSS', competency: 3, category: ['Programming & Frameworks'] },
+  { title: 'Git', competency: 4, category: ['Programming & Frameworks'] },
+  // Data Infrastructure & Tools
   {
     title: 'PostgreSQL',
     competency: 4,
-    category: ['Databases'],
+    category: ['Data Infrastructure & Tools'],
   },
   {
-    title: 'Redis',
+    title: 'MySQL',
     competency: 3,
-    category: ['Databases'],
-  },
-  // Infrastructure
-  {
-    title: 'AWS',
-    competency: 4,
-    category: ['Infrastructure'],
+    category: ['Data Infrastructure & Tools'],
   },
   {
-    title: 'Docker',
-    competency: 4,
-    category: ['Infrastructure'],
-  },
-  {
-    title: 'Kubernetes',
+    title: 'SQLite',
     competency: 3,
-    category: ['Infrastructure'],
+    category: ['Data Infrastructure & Tools'],
   },
   {
-    title: 'Observability',
-    competency: 4,
-    category: ['Infrastructure', 'ML Engineering'],
+    title: 'Supabase',
+    competency: 3,
+    category: ['Data Infrastructure & Tools'],
   },
+  {
+    title: 'Power BI',
+    competency: 4,
+    category: ['Data Infrastructure & Tools'],
+  },
+  {
+    title: 'Tableau',
+    competency: 3,
+    category: ['Data Infrastructure & Tools'],
+  },
+  {
+    title: 'ServiceNow',
+    competency: 3,
+    category: ['Data Infrastructure & Tools'],
+  },
+  {
+    title: 'Excel',
+    competency: 4,
+    category: ['Data Infrastructure & Tools'],
+  },
+  {
+    title: 'Google Sheets',
+    competency: 4,
+    category: ['Data Infrastructure & Tools'],
+  },
+  // Languages
+  { title: 'English (Native)', competency: 5, category: ['Languages'] },
+  {
+    title: 'Spanish (Limited Working Proficiency)',
+    competency: 3,
+    category: ['Languages'],
+  },
+  // Interests
+  { title: 'Statistics', competency: 4, category: ['Interests'] },
+  { title: 'Piano', competency: 4, category: ['Interests'] },
+  { title: 'Fine Art', competency: 4, category: ['Interests'] },
+  { title: 'Muay Thai', competency: 3, category: ['Interests'] },
+  { title: 'History', competency: 3, category: ['Interests'] },
+  { title: 'Philosophy', competency: 3, category: ['Interests'] },
+  { title: 'Teaching', competency: 4, category: ['Interests'] },
+  { title: 'Reading', competency: 4, category: ['Interests'] },
 ].map((skill) => ({ ...skill, category: skill.category.sort() }));
 
 /**

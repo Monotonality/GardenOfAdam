@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import routes from '@/data/routes';
 import { isActiveRoute } from '@/lib/routes';
-import { AUTHOR_NAME } from '@/lib/utils';
+import { AUTHOR_NAME, SITE_INITIALS } from '@/lib/utils';
 
 import Hamburger from './Hamburger';
 import ThemeToggle from './ThemeToggle';
@@ -16,7 +16,7 @@ export default function Navigation() {
   return (
     <header className="site-header">
       <Link href="/" className="site-logo" aria-label={`${AUTHOR_NAME} — home`}>
-        <span className="logo-text">MD</span>
+        <span className="logo-text">{SITE_INITIALS}</span>
       </Link>
 
       <nav className="nav-links" aria-label="Primary">

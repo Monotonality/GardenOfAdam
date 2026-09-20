@@ -6,7 +6,7 @@ import HomePage from '../page';
 import WritingPage from '../writing/page';
 
 describe('writing information architecture', () => {
-  it('surfaces the three newest dated items on the homepage', () => {
+  it('surfaces the newest dated items on the homepage (up to three)', () => {
     const expected = getWritingItems()
       .filter((item) => item.date)
       .slice(0, 3);
@@ -15,7 +15,7 @@ describe('writing information architecture', () => {
     const section = screen.getByRole('region', { name: 'Latest writing' });
     const cards = container.querySelectorAll('.home-writing-item');
 
-    expect(cards).toHaveLength(3);
+    expect(cards).toHaveLength(expected.length);
     expect(
       [...cards].map((card) => card.querySelector('h3')?.textContent),
     ).toEqual(expected.map((item) => item.title));

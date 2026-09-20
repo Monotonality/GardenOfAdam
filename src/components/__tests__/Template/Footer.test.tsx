@@ -14,10 +14,8 @@ describe('Footer', () => {
   it('displays the name and role', () => {
     render(<Footer />);
 
-    expect(screen.getByText("Michael D'Angelo")).toBeInTheDocument();
-    expect(
-      screen.getByText('Member of the Technical Staff at OpenAI'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Adam Torres')).toBeInTheDocument();
+    expect(screen.getByText('Consulting at Actriant')).toBeInTheDocument();
   });
 
   it('does not introduce unrelated headings into the page outline', () => {

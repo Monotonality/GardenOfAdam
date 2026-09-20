@@ -15,31 +15,37 @@ describe('Hero', () => {
     render(<Hero />);
 
     const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toHaveTextContent("Michael D'Angelo");
+    expect(heading).toHaveTextContent('Adam Torres');
   });
 
-  it('describes the current work and Promptfoo joining OpenAI', () => {
+  it('renders the cycling typewriter below the name', () => {
+    render(<Hero />);
+
+    expect(document.querySelector('.hero-rotator')).toBeInTheDocument();
+  });
+
+  it('describes studies at UTD, work at Actriant, and daRSVP', () => {
     const { container } = render(<Hero />);
 
-    const openAiLink = screen.getByRole('link', { name: /openai/i });
-    expect(openAiLink).toHaveAttribute('href', 'https://openai.com');
-    expect(openAiLink).toHaveClass('hero-highlight');
-
-    const promptfooLink = screen.getByRole('link', { name: /promptfoo/i });
-    expect(promptfooLink).toHaveAttribute('href', 'https://promptfoo.dev');
-    expect(promptfooLink).toHaveClass('hero-highlight');
-
-    const codexSecurityLink = screen.getByRole('link', {
-      name: 'Codex Security',
+    const utdLink = screen.getByRole('link', {
+      name: 'University of Texas at Dallas',
     });
-    expect(codexSecurityLink).toHaveAttribute(
+    expect(utdLink).toHaveAttribute('href', 'https://www.utdallas.edu/');
+    expect(utdLink).toHaveClass('hero-highlight');
+
+    const actriantLink = screen.getByRole('link', { name: 'Actriant' });
+    expect(actriantLink).toHaveAttribute(
       'href',
-      'https://openai.com/index/codex-security-now-in-research-preview/',
+      'https://www.linkedin.com/company/actriant',
     );
-    expect(codexSecurityLink).toHaveClass('hero-highlight');
+    expect(actriantLink).toHaveClass('hero-highlight');
+
+    const darsvpLink = screen.getByRole('link', { name: 'daRSVP' });
+    expect(darsvpLink).toHaveAttribute('href', '/writing/what-is-darsvp');
+    expect(darsvpLink).toHaveClass('hero-highlight');
 
     expect(container.querySelector('.hero-tagline')).toHaveTextContent(
-      "I'm a Member of the Technical Staff at OpenAI, working on Promptfoo and Codex Security. I help secure AI systems and use AI to find software vulnerabilities. I co-founded Promptfoo before it joined OpenAI in 2026.",
+      "I'm an Artificial Intelligence and Analytics student at the University of Texas at Dallas, where I conduct financial research. I work at Actriant, helping businesses identify people problems and build technical solutions to solve them. Inventor and lead developer of daRSVP technology.",
     );
   });
 

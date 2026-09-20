@@ -37,7 +37,6 @@ describe('createHeadingId', () => {
       ['Travel / Geography', 'travel-geography'],
       ['Fun Facts', 'fun-facts'],
       ['I Dream Of', 'i-dream-of'],
-      ['Websites from People I Admire', 'websites-from-people-i-admire'],
     ]);
   });
 });

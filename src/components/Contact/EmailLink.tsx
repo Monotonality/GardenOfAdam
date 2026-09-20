@@ -13,23 +13,8 @@ const HOLD_TICKS_AFTER_MESSAGE = 50; // Ticks to wait after message completes
 const CONTACT_ADDRESS = profile.email;
 const [CONTACT_LOCAL_PART, CONTACT_DOMAIN] = CONTACT_ADDRESS.split('@');
 
-const messages = [
-  CONTACT_LOCAL_PART,
-  'hello',
-  'hola',
-  'you-can-email-me-at-literally-anything! Really',
-  'well, not anything. But most things',
-  'like-this',
-  'or-this',
-  'but not this :(  ',
-  'you.can.also.email.me.with.specific.topics.like',
-  'just-saying-hi',
-  'please-work-for-us',
-  'help',
-  'admin',
-  'or-I-really-like-your-website',
-  'thanks',
-];
+/** Only the real local-part is typed; the mailto target never changes. */
+const messages = [CONTACT_LOCAL_PART];
 
 function useInterval(callback: () => void, delay: number | null) {
   const savedCallback = useRef<() => void>(callback);
@@ -130,14 +115,9 @@ interface EmailLinkProps {
 export default function EmailLink({ loopMessage = false }: EmailLinkProps) {
   const reducedMotion = usePrefersReducedMotion();
 
-  // Opens on the real local part, already complete, so the first thing anyone
-  // sees is the actual address — and it holds there before the cycle starts.
-  const [state, dispatch] = useReducer(animationReducer, {
-    idx: 0,
-    message: CONTACT_LOCAL_PART,
-    char: messages[0].length,
-    isActive: true,
-  });
+  const [state, dispatch] = useReducer(animationReducer, undefined, () =>
+    startOf(0),
+  );
 
   // If user prefers reduced motion, show static email immediately
   useEffect(() => {
@@ -170,13 +150,8 @@ export default function EmailLink({ loopMessage = false }: EmailLinkProps) {
       onMouseEnter={handlePause}
       onMouseLeave={handleResume}
     >
-      {/* Always a real link to a real address.
-          The animation cycles through joke aliases, three of which are not
-          valid local-parts ("but not this :(  " among them). Those used to
-          swap the anchor for an aria-disabled, unfocusable <span>, so for
-          roughly a fifth of the cycle the contact page offered no way to
-          reach anyone. The gag is now purely visual: the shown alias is
-          decorative and the destination never changes. */}
+      {/* Always a real link to a real address; the typewriter only reveals
+          the local part character by character. */}
       <a
         href={`mailto:${CONTACT_ADDRESS}`}
         className="contact-email-link"

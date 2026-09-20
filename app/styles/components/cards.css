@@ -494,6 +494,43 @@
   text-transform: none;
 }
 
+.degree-daterange {
+  margin-top: 0;
+}
+
+/* ========================================
+   CERTIFICATION CARDS
+   ======================================== */
+
+.certification-container {
+  margin-bottom: 1.25em;
+}
+
+.certification-container h3 {
+  font-weight: var(--font-weight-normal);
+}
+
+.certification-name {
+  font-size: var(--text-md);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-normal);
+  margin-bottom: 0.25em;
+  text-transform: none;
+  color: var(--color-fg-bold);
+}
+
+.certification-meta {
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-normal);
+  color: var(--color-fg-light);
+  margin: 0;
+  text-transform: none;
+}
+
+.certification-meta a {
+  color: inherit;
+}
+
 /* ========================================
    COURSE CARDS
    ======================================== */

@@ -13,7 +13,7 @@ export default function Education({ data }: EducationProps) {
         <h2>Education</h2>
       </div>
       {data.map((degree) => (
-        <Degree data={degree} key={degree.school} />
+        <Degree data={degree} key={`${degree.school}-${degree.year}`} />
       ))}
     </div>
   );

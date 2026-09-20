@@ -8,11 +8,22 @@ describe('ContactIcons', () => {
     render(<ContactIcons />);
 
     // Check if GitHub link is present
+    const linkedInLink = screen.getByRole('link', { name: /linkedin/i });
+    expect(linkedInLink).toHaveAttribute(
+      'href',
+      'https://www.linkedin.com/in/adam-venegas-torres/',
+    );
+
     const githubLink = screen.getByRole('link', { name: /github/i });
-    expect(githubLink).toBeInTheDocument();
     expect(githubLink).toHaveAttribute(
       'href',
-      expect.stringContaining('github.com'),
+      'https://github.com/Monotonality',
+    );
+
+    const instagramLink = screen.getByRole('link', { name: /instagram/i });
+    expect(instagramLink).toHaveAttribute(
+      'href',
+      'https://www.instagram.com/t.adam.j/',
     );
 
     // Check if email link is present
@@ -24,10 +35,9 @@ describe('ContactIcons', () => {
     );
   });
 
-  it('has correct number of contact links', () => {
+  it('renders only linked social profiles plus email', () => {
     render(<ContactIcons />);
-    const links = screen.getAllByRole('link');
-    expect(links.length).toBeGreaterThan(0);
+    expect(screen.getAllByRole('link')).toHaveLength(4);
   });
 
   it('can omit email when the page already has a primary email action', () => {

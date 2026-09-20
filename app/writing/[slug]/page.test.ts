@@ -7,27 +7,18 @@ import { generateMetadata } from './page';
 describe('writing post metadata', () => {
   it('uses a trailing-slash canonical URL for posts', async () => {
     const metadata = await generateMetadata({
-      params: Promise.resolve({ slug: 'claude-code-outage' }),
+      params: Promise.resolve({ slug: 'what-is-darsvp' }),
     });
 
-    expect(metadata.openGraph?.url).toBe(
-      `${SITE_URL}/writing/claude-code-outage/`,
-    );
+    expect(metadata.openGraph?.url).toBe(`${SITE_URL}/writing/what-is-darsvp/`);
   });
 
-  it('uses an explicitly selected article image for social metadata', async () => {
+  it('falls back to the site share card when a post has no article image', async () => {
     const metadata = await generateMetadata({
-      params: Promise.resolve({ slug: 'shipping-with-claude-code' }),
+      params: Promise.resolve({ slug: 'what-is-darsvp' }),
     });
 
-    expect(metadata.openGraph?.images).toEqual([
-      {
-        url: `${SITE_URL}/images/writing/api-costs-july-2025.png`,
-        width: 1117,
-        height: 812,
-        alt: 'Anthropic API costs for July 2025 showing $9,986.20 in token usage',
-      },
-    ]);
-    expect(metadata.twitter?.images).toEqual(metadata.openGraph?.images);
+    expect(metadata.openGraph?.images).toBeUndefined();
+    expect(metadata.twitter?.images).toBeUndefined();
   });
 });

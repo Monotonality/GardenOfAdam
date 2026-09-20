@@ -1,11 +1,17 @@
 {
-  "name": "Michael D'Angelo",
-  "role": "Member of the Technical Staff",
-  "employer": "OpenAI",
-  "focus": "Promptfoo and Codex Security",
-  "birthDate": "1990-02-05T09:24:00-05:00",
-  "computingSince": 1993,
+  "name": "Adam Torres",
+  "initials": "AT",
+  "role": "Artificial Intelligence and Analytics student",
+  "employer": "University of Texas at Dallas",
+  "focus": "Actriant and daRSVP",
+  "birthDate": "2005-01-01T00:00:00-06:00",
+  "computingSince": 2011,
   "countriesVisited": 53,
-  "currentCity": "New York, NY",
-  "email": "hi@mldangelo.com"
+  "currentCity": "Frisco, TX",
+  "email": "adam.j.tor@gmail.com",
+  "phone": "+1 469-980-9044",
+  "streetAddress": "15196 Elderflower Lane",
+  "addressLocality": "Frisco",
+  "addressRegion": "TX",
+  "postalCode": "75035"
 }

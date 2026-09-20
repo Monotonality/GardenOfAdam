@@ -30,6 +30,7 @@ function externalSource(url: string): string {
 
   if (hostname === 'promptfoo.dev') return 'Promptfoo';
   if (hostname === 'linkedin.com') return 'LinkedIn';
+  if (hostname === 'jindal.utdallas.edu') return 'UT Dallas JSOM';
 
   return hostname;
 }

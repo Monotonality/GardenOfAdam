@@ -1,96 +1,65 @@
 export const aboutMarkdown = `# Intro
 
-I build products, companies, and teams across AI, security, and infrastructure. Today, I am a Member of the Technical Staff at [OpenAI](https://openai.com), working on [Promptfoo](https://promptfoo.dev) and [Codex Security](https://openai.com/index/codex-security-now-in-research-preview/). I help secure AI systems and use AI to find software vulnerabilities.
+I'm an Artificial Intelligence and Analytics student at the [University of Texas at Dallas](https://www.utdallas.edu/), where I conduct financial research. I work at [Actriant](https://www.linkedin.com/company/actriant), helping businesses identify people problems and build technical solutions to solve them. Inventor and lead developer of [daRSVP](/writing/what-is-darsvp/) technology.
 
-I co-founded [Promptfoo](https://promptfoo.dev) before it joined OpenAI in 2026. I also co-founded [Arthena](https://arthena.com) (acquired by Masterworks) and [Matroid](https://matroid.com), led engineering at [Smile ID](https://usesmileid.com), and helped build satellites at [Planet](https://planet.com) and [Planetary Resources](https://en.wikipedia.org/wiki/Planetary_Resources).
+I grew up moving between the U.S., New Zealand, and back again before Dallas became home for most of my childhood. I still move between art and engineering—the patience I learned with pastels and piano shows up when I'm debugging or mentoring someone through their first pull request. Most of what I build starts as a people problem: a studio running on memory and paper, a student council blind to its own budget, a team losing hours to friction no one had measured.
 
-In my spare time, I enjoy investing in people and ideas through a [small venture fund](https://skepticalinvestments.biz), focusing on projects with high social impact. If you think I can be helpful to you or your cause, or if you're interested in collaborating, feel free to get in touch.
+The sections below are the longer version—how I got here, what I like, where I've been, and a few facts that never made it onto my résumé. If you want to work together, [say hello](/contact/).
 
 # Some History
 
-- My parents put a computer in my bedroom in 1993 when I was 3. It was an old Tandy that ran MS-DOS. My favorite games were Street Rod 2, Wolfenstein 3D, and Tom and Jerry. It had a mechanical keyboard and a turbo button. To this day, I still don't know what pressing the turbo button really did.
-- We subscribed to AOL in 1995. I still remember installing it from a floppy disk onto our brand-new Packard Bell. It took years for me to send my first email.
-- In the summer of 1996, my uncle purchased [MegaRace](https://en.wikipedia.org/wiki/MegaRace) from [Media Play](https://en.wikipedia.org/wiki/Media_Play) and installed it on my mom's work computer. I might have endangered her business by using her computer too much.
-- At 7, I discovered the mini-games hidden in Microsoft Office. I also beat Minesweeper on expert for the first time.
-- At 8, my parents bought me a Sony Mavica MVC-FD71 digital camera after I stole their SLR one too many times. It could fit 10 images to a floppy disk at a 0.3MP resolution. I still have it, and it still works. I've been taking photographs ever since, now with a Nikon D750, D800, and occasionally with a Mamiya 6II.
-- At 10, I built my first website with Microsoft FrontPage on our Pentium III [Gateway](https://en.wikipedia.org/wiki/Gateway,_Inc.). My website was terrible.
-- I was 11 when I built my first [Tesla Coil](https://en.wikipedia.org/wiki/Tesla_coil) (without my parents' permission). Over the next few years, I built several more, including one of the first audio modulated coils and one of the first DRSSTCs.
-- When I was 12, I set the all-time high record at my local laser tag facility by reverse engineering the charging station and weapon protocols with a photo-resistor, micro-cassette recorder, and a lot of patience. I was unstoppable.
-- At 13, I went to space camp and fell in love. I went back two more times and promised myself that I'd work in space. I've since helped build three generations of satellites and have contributed to two more.
-- At 14, I was almost expelled for finding a backdoor into my high school's file server and telling everyone but the faculty members about it. Later that year, I figured out how to turn off the internet firewall by editing system registry keys. I anonymously shared my work months later.
-- At 16, I participated in a foreign exchange program in Dortmund, Germany. Since then, I've gone back almost every year.
-- 14 - 17, I played a lot of video games. My favorites included Counter-Strike Source, Command and Conquer 3, Halo 2, and Age of Empires II.
-- At 18, in the summer before college, my friends and I started playing [Muggle Quidditch](<https://en.wikipedia.org/wiki/Quidditch_(sport)>). We went on to start over 8 teams in the [International Quidditch Association](https://en.wikipedia.org/wiki/International_Quidditch_Association), including the [Buffalo Quidditch Society](https://www.facebook.com/buffaloquidditch/). At our height, we were ranked third in the IQA. Although I don't play anymore, you can still see pictures of me holding a broom while wearing a chess camp t-shirt on Facebook.
-- At 19, I took my first graduate course and published my first academic paper.
-- At 20, I co-authored a grant to build a satellite and managed a 60+ person team for the next two years. You can read more about [that project](https://ubnl.space/glados/).
-
-Ask me in person for other stories that I'm afraid to share with the internet.
+- At 5, my parents brought home a computer for me and my five siblings to share, and my mother regretfully sat me down to start my classical piano journey. When I wasn't practicing scales, I was glued to the monitor, watching my dad and brother play [Age of Empires](https://en.wikipedia.org/wiki/Age_of_Empires) on a heavy beige PC.
+- At 6, I tore apart my first calculator to see what was inside. I'm still not entirely sure I reassembled it correctly, but it sparked a lifelong obsession with taking things apart to figure out how they work.
+- At 12, I picked up pastels in middle school and found a real passion for visual art. I ended up winning a VASE Gold Seal and three Texas State Medals as one of the top young artists in Texas. The deep patience and attention to detail I built on paper ended up transferring directly into math and code.
+- At 15, I took my first coding class. When school shifted remote during quarantine, I looped a pre-recorded video of myself into Zoom so I could spend class hours tinkering with software and playing video games. I landed a job to teach kids Roblox development in Lua, but the class was canceled for low enrollment before my first day. Pivoting, I followed my sister's lead and started teaching private piano lessons instead.
+- At 17, I took over my sister's piano business. Realizing the operation was running on memory and paper, I built a custom CRM and analytics dashboard from scratch to streamline scheduling and client management—my first real taste of business optimization. That same year, I completed Harvard's [CS50 Web Development](https://cs50.harvard.edu/web/) course, fully convinced my future was in full-stack web dev.
+- At 18, I spent the summer studying abroad in Spain at the [Universidad de Salamanca](https://www.usal.es/). I spent my time traveling across Spain and Portugal, making incredible friends who challenged my perspective and inspired me to aim much bigger in life.
+- At 19, I started at [UT Dallas](https://www.utdallas.edu/) and joined [Dallas Formula Racing](https://www.utdallas.edu/orgs/dfr/) to rebuild their sponsor database systems, where I discovered I loved mentoring junior developers just as much as teaching piano. I also joined the Undergraduate Dean's Council, which was a chaotic mess of disconnected spreadsheets. I almost dropped out my first semester, but instead I stepped up as Head of Finance and built [Apollo](/writing/jsom-super-owl-apollo/), an internal ERP platform to handle university funding.
+- At 20, Apollo grew to run the entire organization, leading me to found a dedicated tech committee and serve as Head of Technology. That fall I joined the Nash Leaders Program, which cemented my drive to focus relentlessly on high-impact solutions.
+- At 21, I interned at [Motorola Solutions](https://www.motorolasolutions.com/) as a Software Systems Technologist. Handed a vague request to improve a nine-person team's workflow, I treated time as a data problem and built a telemetry pipeline to track operator bottlenecks. The data-backed results caught leadership's attention immediately: I was pulled off routine intern busywork and given North American operational datasets to analyze. By applying game theory and behavioral psychology, my recommendations were expanded from my small team to a global rollout. [I wrote the long version on LinkedIn](https://www.linkedin.com/pulse/bridging-theory-practice-my-internship-motorola-solutions-adam-torres-3gpmc/).
+- Today I'm conducting financial research, helping small businesses modernize their infrastructure, and building my own software tools.
 
 # I Like
 
-- Running.
-- Skiing.
-- Sailing and the sea.
-- Space.
-- Summer.
-- [Books](https://www.goodreads.com/mdangelo).
-- Colored pencils ([Faber-Castell Polychromos](https://www.faber-castell.com/products/art-and-graphic/polychromos)).
-- Podcasts ([The Daily](https://www.nytimes.com/column/the-daily), [The Ezra Klein Show](https://www.nytimes.com/column/ezra-klein-podcast), [Planet Money](https://www.npr.org/sections/money/), [Dwarkesh Podcast](https://www.dwarkesh.com/about/), [The a16z Show](https://a16z.com/podcasts/a16z-podcast/), [The MAD Podcast with Matt Turck](https://firstmark.com/community/the-mad-podcast/), [Uncapped with Jack Altman](https://podcasts.apple.com/us/podcast/uncapped-with-jack-altman/id1801867202), [Darknet Diaries](https://darknetdiaries.com/), and others).
+- Jazz piano.
+- Swimming.
+- Portraiture.
+- Architecture.
+- Winter.
+- Books.
 - [Good design](/).
-- [Photography](https://instagram.com/dangelosaurus).
+- [Photography](https://www.instagram.com/t.adam.j/).
+- Muay Thai.
+- Bartending.
+- Grilling.
+- Gardening.
+- Pastel pencils ([Faber-Castell Pitt](https://www.faber-castell.com/products/art-and-graphic/pitt-pastel-pencils)).
+- Philosophy.
+- Science.
 
 # Travel / Geography
 
-- I am originally from Buffalo, New York. I have since lived in Palo Alto, Mountain View, San Francisco, Seattle, and New York City.
-- I've been to approximately 50 countries, some of which I have forgotten, many of which I would like to revisit.
-- In 2016, I visited Canada, Ethiopia, Austria, Germany, Belgium, Ireland, Northern Ireland, Italy, Romania, Sweden, Norway, Svalbard, Panama, Costa Rica, Uganda, Japan, and the UAE, mostly in that order.
-- In 2017, I visited Canada, Japan, Denmark, Germany, Sweden, Estonia, Russia, the Netherlands, Belgium, the UK, Spain, Iceland, France, Switzerland, Ethiopia, and Luxembourg.
-- In 2018, I visited Canada, France, Italy, Israel, and the UK.
-- In 2019, I visited Canada, the UK, France, and Switzerland.
-- In 2020, I traveled barely 20 blocks. I stayed in New York and remodeled an apartment.
-- In 2021, I continued remodeling an apartment.
-- In 2022, I switched jobs and visited the UK, France, Greece, Belgium, Luxembourg, Germany, and Kenya.
-- In 2023, I visited France, the UK, Ireland, and Rwanda.
-- I am an Oregon Trail II enthusiast.
+- I am originally from northwestern America—born there, raised for about a week before my family moved to Tennessee in 2006 and Utah in 2008.
+- In 2012, my dad moved us to New Zealand. We visited Australia and Japan that year.
+- In 2013, we moved back to the States and relocated to Dallas, Texas, which became my home for the next decade.
+- In 2015, I traveled to Mexico.
+- In 2016, I visited Canada and cut my face open near Niagara Falls.
+- In 2018, I traveled throughout Washington and Oregon.
+- In 2024, I lived in Spain with my two brothers and traveled Portugal.
+- In 2025, I moved back to Texas.
 
 # Fun Facts
 
-- I have a list of thousands of ideas, like creating matching bow ties for cats and humans.
-- I almost always have a sketchbook with me and a [01 Sakura Pigma Micron Pen](https://www.sakuraofamerica.com/product/pigma-micron/).
-- I can't locate every country on a map.
-- I operate a [small angel fund](http://skepticalinvestments.biz/) with terrible returns.
-- I break about 30 traffic laws on a skateboard or [bicycle](https://www.citibikenyc.com/) every single day.
-- I stack-rank coffee shops, restaurants, and every dog I see in New York.
-- I added this page because many people complained that my site was just my resume.
+- I ran an analysis to find out how many dollars my team at Motorola spent saying goodbye in the office every day (~$6,700 annually).
+- I was born with really poor taste buds and can't really taste sour things.
+- I'm horrible with names, so I carry a small notepad everywhere I go.
+- I'm the youngest of six—my siblings include triplets and twins, and I am neither.
 
 # I Dream Of
 
-- Inspiring and feeling inspired.
-- Enabling a brighter future for everyone, regardless of political or socioeconomic status.
-- Treating every individual with genuine kindness and respect.
-- Staying curious.
-- Continually improving.
-- You not checking the commit history for earlier drafts of this file.
-
-# Websites from People I Admire
-
-- [Alex Peysakhovich](http://alexpeys.github.io/)
-- [Chris Lengerich](http://www.chrislengerich.com/)
-- [Chris Saad](https://www.chrissaad.com/)
-- [Duncan Tomlin](http://duncantomlin.com/)
-- [Ed Kearney](https://edkearney.com/)
-- [Gia Jung](http://giajung.com/)
-- [Hawley Moore](http://hawleymoore.com/)
-- [Holman Gao](https://golmansax.com/)
-- [Ian Webster](http://ianww.com/)
-- [Johanna Flato](https://www.johannaflato.com/)
-- [Judy Mou](http://www.judymou.com/)
-- [Judy Suh](https://www.judysuh.com/)
-- [Kristina Monakhova](https://kristinamonakhova.com/)
-- [Noah Trueblood](http://notrueblood.com/)
-- [Ruoxi Wang](http://ruoxiw.com/)
-- [Tom Sachs](https://www.tomsachs.org/)
-- [Will Holley](https://willholley.com/)
-
-If we are friends and you feel like you belong on this list, you're probably right. Submit a PR, or ask me, and I'll add you.
+- Having one unique idea of my very own that I can contribute to humanity.
+- Developing a better way to interface with the collection of human knowledge on the internet.
+- Never running out of things to learn.
+- Being able to bench 225.
+- Meeting people who make me feel dumb.
 `;

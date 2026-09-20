@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import profile from '@/data/profile.json';
 
+import HeroRotator from './HeroRotator';
 import ThemePortrait from './ThemePortrait';
 
 export default function Hero() {
@@ -13,35 +14,38 @@ export default function Hero() {
             <span className="hero-name">{profile.name}</span>
           </h1>
 
-          <p className="hero-tagline">
-            I&apos;m a {profile.role} at{' '}
-            <a href="https://openai.com" className="hero-highlight">
-              {profile.employer}
-            </a>
-            , working on{' '}
-            <a href="https://promptfoo.dev" className="hero-highlight">
-              Promptfoo
-            </a>{' '}
-            and{' '}
-            <a
-              href="https://openai.com/index/codex-security-now-in-research-preview/"
-              className="hero-highlight"
-            >
-              Codex Security
-            </a>
-            . I help secure AI systems and use AI to find software
-            vulnerabilities. I co-founded Promptfoo before it joined OpenAI in
-            2026.
-          </p>
+          <HeroRotator />
 
-          <div className="hero-cta">
-            <Link href="/about" className="button">
-              About Me
-            </Link>
-            <Link href="/resume" className="hero-resume-link">
-              View Resume
-              <span aria-hidden="true">→</span>
-            </Link>
+          <div className="hero-body">
+            <p className="hero-tagline">
+              I&apos;m an Artificial Intelligence and Analytics student at the{' '}
+              <a href="https://www.utdallas.edu/" className="hero-highlight">
+                University of Texas at Dallas
+              </a>
+              , where I conduct financial research. I work at{' '}
+              <a
+                href="https://www.linkedin.com/company/actriant"
+                className="hero-highlight"
+              >
+                Actriant
+              </a>
+              , helping businesses identify people problems and build technical
+              solutions to solve them. Inventor and lead developer of{' '}
+              <Link href="/writing/what-is-darsvp/" className="hero-highlight">
+                daRSVP
+              </Link>{' '}
+              technology.
+            </p>
+
+            <div className="hero-cta">
+              <Link href="/about" className="button">
+                About Me
+              </Link>
+              <Link href="/resume" className="hero-resume-link">
+                View Resume
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
           </div>
         </div>
 

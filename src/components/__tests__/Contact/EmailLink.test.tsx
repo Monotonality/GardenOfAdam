@@ -49,54 +49,27 @@ describe('EmailLink', () => {
       await Promise.resolve();
     });
 
-    // Initial state shows the real local-part (accessibility: never show empty)
     const prefix = document.querySelector('.contact-email-prefix');
-    expect(prefix?.textContent).toBe(localPart);
+    expect(prefix?.textContent).toBe(localPart[0]);
 
-    // Advance through multiple messages to verify animation works
-    // Each message takes ~50 chars + 50 hold ticks at 50ms each
     act(() => {
-      vi.advanceTimersByTime(10000); // Advance 10 seconds
+      vi.advanceTimersByTime(localPart.length * 50 + 5_000);
     });
 
-    // Animation should have progressed beyond 'hi'
-    // The component continues to animate through messages
-    expect(prefix).toBeInTheDocument();
+    expect(prefix?.textContent).toBe(localPart);
   });
 
-  /**
-   * Advancing used to reset to zero characters, leaving `message` empty for a
-   * tick. The render fell back to the static local part, so the prefix snapped
-   * back to the real address for one frame at every one of the fifteen message
-   * boundaries — a visible flicker on the deployed page.
-   */
-  it('never blanks or snaps back to the address mid-animation', () => {
+  it('never shows an empty prefix while the address is typing', () => {
     render(<EmailLink loopMessage />);
     const prefix = () =>
       document.querySelector('.contact-email-prefix')?.textContent ?? '';
 
-    let previous = prefix();
-
-    // Two full cycles, so the loop wrap is covered as well as every boundary.
     for (let elapsed = 0; elapsed < 120_000; elapsed += 50) {
       act(() => {
         vi.advanceTimersByTime(50);
       });
 
-      const shown = prefix();
-
-      // The blank frame itself.
-      expect(shown).not.toBe('');
-
-      // The flash is a *jump* to the complete address from some other alias
-      // already several characters long. Looping re-types the address
-      // legitimately, but that grows "h" -> "hi", so the previous frame is a
-      // single character and this guard leaves it alone.
-      if (previous.length > 1 && previous !== localPart) {
-        expect(shown).not.toBe(localPart);
-      }
-
-      previous = shown;
+      expect(prefix()).not.toBe('');
     }
   });
 
@@ -188,21 +161,14 @@ describe('EmailLink', () => {
   it('generates valid mailto href for valid email prefixes', () => {
     render(<EmailLink />);
 
-    // Advance time to get a valid email prefix
     act(() => {
-      vi.advanceTimersByTime(150); // Type out 'hi'
+      vi.advanceTimersByTime(150);
     });
 
     const link = screen.getByRole('link');
     expect(link.getAttribute('href')).toBe(`mailto:${profile.email}`);
   });
 
-  /**
-   * Three of the joke aliases are not valid email local-parts, including
-   * "but not this :(  ". Those used to replace the anchor with an
-   * aria-disabled, unfocusable span, leaving the contact page with no way to
-   * reach anyone for roughly a fifth of the animation cycle.
-   */
   it('keeps a working email link through the entire animation cycle', () => {
     render(<EmailLink loopMessage />);
 
@@ -224,8 +190,7 @@ describe('EmailLink', () => {
       vi.advanceTimersByTime(50 * 200);
     });
 
-    // The alias changes ~20x/second; an accessible name that mutated with it
-    // would be unusable, so the visible text is decorative.
+    // The visible prefix is decorative; the accessible name stays the full address.
     expect(
       screen.getByRole('link', { name: `Email ${profile.email}` }),
     ).toBeInTheDocument();

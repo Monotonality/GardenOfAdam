@@ -7,6 +7,7 @@ import profile from '@/data/profile.json';
 // Site configuration
 export const SITE_URL = 'https://mldangelo.com';
 export const AUTHOR_NAME = profile.name;
+export const SITE_INITIALS = profile.initials;
 export const TWITTER_HANDLE = '@dangelosaurus';
 /**
  * The portrait. Used for JSON-LD `image`, where the value should be a picture
@@ -35,7 +36,7 @@ export const SHARE_IMAGE_DIMENSIONS = {
 
 // Canonical one-line bio, shared across page metadata, OpenGraph, and JSON-LD.
 export const SITE_DESCRIPTION =
-  'Member of the Technical Staff at OpenAI, working on Promptfoo and Codex Security. Co-founded Promptfoo before it joined OpenAI in 2026.';
+  "I'm an Artificial Intelligence and Analytics student at the University of Texas at Dallas, where I conduct financial research. I work at Actriant, helping businesses identify people problems and build technical solutions to solve them. Inventor and lead developer of daRSVP technology.";
 
 // Image dimension constants
 export const PROJECT_IMAGE = {

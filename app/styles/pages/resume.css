@@ -6,6 +6,7 @@
    that opens the readout strip on the home page. */
 .resume-page .education .title,
 .resume-page .experience .title,
+.resume-page .certifications .title,
 .resume-page .skills .title,
 .resume-page .courses .title,
 .resume-page .references .title {
@@ -15,6 +16,7 @@
 
 .resume-page .education .title h2,
 .resume-page .experience .title h2,
+.resume-page .certifications .title h2,
 .resume-page .skills .title h2,
 .resume-page .courses .title h2,
 .resume-page .references .title h2 {
