@@ -6,7 +6,12 @@ import GoogleAnalytics from '@/components/Template/GoogleAnalytics';
 import Navigation from '@/components/Template/Navigation';
 import { MAIN_CONTENT_ID } from '@/components/Template/PageWrapper';
 import ScrollToTop from '@/components/Template/ScrollToTop';
-import { sharedOpenGraph, sharedTwitter } from '@/lib/metadata';
+import {
+  sharedOpenGraph,
+  sharedTwitter,
+  siteIcons,
+  siteManifest,
+} from '@/lib/metadata';
 import { AUTHOR_NAME, SITE_DESCRIPTION, SITE_URL } from '@/lib/utils';
 import { bricolage, jetbrainsMono, newsreader } from './fonts';
 import './tailwind.css';
@@ -31,6 +36,8 @@ export const metadata: Metadata = {
   authors: [{ name: AUTHOR_NAME }],
   creator: AUTHOR_NAME,
   metadataBase: new URL(SITE_URL),
+  icons: siteIcons,
+  manifest: siteManifest,
   // The root is the origin of the share metadata, so it uses the same shared
   // blocks as every other page. Hand-writing them here is what left the
   // homepage advertising a different og:image:alt from the rest of the site

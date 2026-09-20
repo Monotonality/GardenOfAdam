@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from 'react';
 
-import { HERO_ROTATOR_PHRASES } from '@/data/heroRotator';
+import {
+  HERO_ROTATOR_LONGEST_PHRASE,
+  HERO_ROTATOR_PHRASES,
+} from '@/data/heroRotator';
 import usePrefersReducedMotion from '@/hooks/usePrefersReducedMotion';
 
 const TYPE_MS = 55;
@@ -57,14 +60,18 @@ export default function HeroRotator() {
   return (
     <p className="hero-rotator" aria-live="off">
       <span className="sr-only">Roles: </span>
-      <span className="hero-rotator-text" aria-hidden="true">
-        {text}
+      <span className="hero-rotator-track">
+        <span className="hero-rotator-sizer" aria-hidden="true">
+          {HERO_ROTATOR_LONGEST_PHRASE}
+        </span>
+        <span className="hero-rotator-line" aria-hidden="true">
+          <span className="hero-rotator-text">{text}</span>
+          <span
+            className="hero-rotator-cursor"
+            data-reduced={prefersReducedMotion ? 'true' : 'false'}
+          />
+        </span>
       </span>
-      <span
-        className="hero-rotator-cursor"
-        aria-hidden="true"
-        data-reduced={prefersReducedMotion ? 'true' : 'false'}
-      />
       <span className="sr-only">{HERO_ROTATOR_PHRASES.join(', ')}</span>
     </p>
   );

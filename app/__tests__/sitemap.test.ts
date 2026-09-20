@@ -41,4 +41,29 @@ describe('sitemap', () => {
     expect(postEntries.length).toBeGreaterThan(0);
     expect(postEntries.every((entry) => entry.url.endsWith('/'))).toBe(true);
   });
+
+  it('lists every published writing post', () => {
+    const entries = sitemap();
+
+    expect(entries).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          url: `${SITE_URL}/writing/what-is-darsvp/`,
+        }),
+        expect.objectContaining({
+          url: `${SITE_URL}/writing/jsom-super-owl-apollo/`,
+        }),
+      ]),
+    );
+  });
+
+  it('covers each navigation route exactly once', () => {
+    const entries = sitemap();
+    const staticUrls = entries
+      .filter((entry) => !entry.lastModified)
+      .map((entry) => entry.url);
+
+    expect(staticUrls).toHaveLength(7);
+    expect(new Set(staticUrls).size).toBe(7);
+  });
 });

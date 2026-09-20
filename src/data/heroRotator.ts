@@ -10,3 +10,9 @@ export const HERO_ROTATOR_PHRASES = [
   'Photographer',
   'Failed Comedian',
 ] as const;
+
+/** Width anchor for the typewriter row so deleting to empty does not reflow the hero. */
+export const HERO_ROTATOR_LONGEST_PHRASE = HERO_ROTATOR_PHRASES.reduce(
+  (longest, phrase) => (phrase.length > longest.length ? phrase : longest),
+  HERO_ROTATOR_PHRASES[0],
+);

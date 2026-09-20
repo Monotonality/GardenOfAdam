@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { HERO_ROTATOR_PHRASES } from '@/data/heroRotator';
@@ -30,7 +30,7 @@ describe('HeroRotator', () => {
   it('types the first phrase character by character', () => {
     render(<HeroRotator />);
 
-    expect(screen.queryByText(HERO_ROTATOR_PHRASES[0])).not.toBeInTheDocument();
+    expect(document.querySelector('.hero-rotator-text')).toHaveTextContent('');
 
     act(() => {
       vi.advanceTimersByTime(60);

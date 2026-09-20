@@ -43,6 +43,28 @@ export const sharedOpenGraph: Metadata['openGraph'] = {
   ],
 };
 
+const FAVICON_PATH = '/images/favicon';
+
+/** Tab and PWA icons; raster assets come from `npm run favicon`. */
+export const siteIcons: NonNullable<Metadata['icons']> = {
+  icon: [
+    {
+      url: `${FAVICON_PATH}/favicon-32x32.png`,
+      sizes: '32x32',
+      type: 'image/png',
+    },
+    {
+      url: `${FAVICON_PATH}/favicon-16x16.png`,
+      sizes: '16x16',
+      type: 'image/png',
+    },
+  ],
+  shortcut: `${FAVICON_PATH}/favicon.ico`,
+  apple: `${FAVICON_PATH}/apple-touch-icon.png`,
+};
+
+export const siteManifest = `${FAVICON_PATH}/manifest.json`;
+
 export const sharedTwitter: Metadata['twitter'] = {
   card: 'summary_large_image',
   site: TWITTER_HANDLE,

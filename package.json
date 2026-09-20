@@ -25,6 +25,7 @@
     "predeploy": "npm run build",
     "analyze": "ANALYZE=true npm run build",
     "og": "node scripts/generate-og.mjs",
+    "favicon": "node scripts/generate-favicon.mjs",
     "og:check": "node scripts/check-og.mjs",
     "verify-export": "node scripts/verify-export.mjs"
   },
@@ -58,6 +59,7 @@
     "@vitest/coverage-v8": "^5.0.1",
     "jsdom": "^30.0.0",
     "prettier": "^3.9.7",
+    "to-ico": "^1.1.5",
     "typescript": "^7.0.2",
     "vitest": "^5.0.1"
   },

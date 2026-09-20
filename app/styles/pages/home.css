@@ -46,9 +46,6 @@
 
 /* Cycling typewriter — mono label under the name (desktop). */
 .hero-rotator {
-  display: flex;
-  align-items: center;
-  min-height: 1.6em;
   margin: 0 0 1.25rem;
   font-family: var(--font-mono);
   font-size: var(--text-ui);
@@ -56,6 +53,29 @@
   letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--color-fg-light);
+}
+
+/* Invisible longest phrase sets width; typed text and cursor stack on top. */
+.hero-rotator-track {
+  display: grid;
+  align-items: center;
+  min-height: 1.6em;
+}
+
+.hero-rotator-sizer,
+.hero-rotator-line {
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.hero-rotator-sizer {
+  visibility: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  /* Room for the blinking cursor beside the longest phrase. */
+  padding-right: 5px;
 }
 
 .hero-rotator-text {
