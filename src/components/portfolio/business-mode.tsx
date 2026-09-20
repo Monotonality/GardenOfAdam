@@ -1,4 +1,3 @@
-import { Wrench } from "lucide-react"
 import {
   businessCases,
   businessCredentials,
@@ -7,7 +6,7 @@ import {
   businessMemberships,
   impactStats,
 } from "@/lib/portfolio/business"
-import { MediaSlot } from "./media-slot"
+import { EngagementReader } from "./engagement-reader"
 
 export function BusinessMode() {
   const { education, certifications, languages } = businessCredentials
@@ -46,61 +45,9 @@ export function BusinessMode() {
         </dl>
       </section>
 
-      <section className="mt-16">
+      <section className="mt-14">
         <h2 className="font-serif text-2xl font-medium tracking-tight">Selected engagements</h2>
-        <div className="mt-6 space-y-10">
-          {businessCases.map((item) => (
-            <article key={item.slug}>
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-serif text-xl font-semibold tracking-tight">{item.title}</h3>
-                {item.status === "building" && (
-                  <span className="shrink-0 rounded-full border border-burgundy/30 bg-burgundy/5 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-burgundy">
-                    <Wrench className="mr-1 inline size-3" />
-                    In progress
-                  </span>
-                )}
-              </div>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {item.org} · {item.period}
-              </p>
-              <p className="mt-1 text-xs font-medium text-burgundy">{item.role}</p>
-
-              <p className="mt-3 leading-relaxed text-foreground/85">{item.summary}</p>
-
-              {item.points.length > 0 && (
-                <ul className="mt-3 space-y-2">
-                  {item.points.map((point) => (
-                    <li key={point} className="flex gap-2 leading-relaxed text-foreground/75">
-                      <span className="mt-px shrink-0 select-none text-burgundy">—</span>
-                      {point}
-                    </li>
-                  ))}
-                </ul>
-              )}
-
-              <div className="mt-4">
-                <MediaSlot media={item.media ?? []} />
-              </div>
-
-              {item.links && item.links.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1">
-                  {item.links.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      onClick={(e) => {
-                        if (link.href === "#") e.preventDefault()
-                      }}
-                      className="text-sm font-medium text-burgundy underline-offset-4 hover:underline"
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </article>
-          ))}
-        </div>
+        <EngagementReader cases={businessCases} />
       </section>
 
       <section className="mt-16">

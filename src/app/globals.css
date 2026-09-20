@@ -151,6 +151,22 @@ body {
   }
 }
 
+/* Content-pane reveal in the business-mode engagement reader */
+.panel-reveal {
+  animation: panel-fade-rise 260ms ease both;
+}
+
+@keyframes panel-fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {
@@ -159,5 +175,8 @@ body {
   html,
   body {
     transition: none;
+  }
+  .panel-reveal {
+    animation: none;
   }
 }

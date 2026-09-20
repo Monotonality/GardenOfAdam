@@ -13,6 +13,7 @@ export interface BusinessCase {
   period: string
   role: string
   status?: "building"
+  preview: string
   summary: string
   points: string[]
   media?: MediaSlot[]
@@ -67,6 +68,8 @@ export const businessCases: BusinessCase[] = [
     org: "Undergraduate Dean's Council · JSOM · UT Dallas",
     period: "Jan 2025 – May 2026",
     role: "Founder · Head of Technology",
+    preview:
+      "Governance platform replacing spreadsheets for a 7-committee body serving 6,300+ students.",
     summary:
       "Rebuilt how a 7-committee governance body tracks funding, attendance, and engagement for 6,300+ undergraduate students.",
     points: [
@@ -82,6 +85,7 @@ export const businessCases: BusinessCase[] = [
     period: "2026 – Present",
     role: "Engineering Lead · Scope Elicitation",
     status: "building",
+    preview: "Rebuilding the scholars program's operating model alongside its management platform.",
     summary:
       "Co-rebuilding the ALIAS scholars program's operating model while building its management platform.",
     points: [
@@ -96,6 +100,7 @@ export const businessCases: BusinessCase[] = [
     org: "HouseCall Teaching · Small Business",
     period: "Mar 2022 – Apr 2025",
     role: "Full-Stack Developer",
+    preview: "One place for scheduling, progress, and billing across a private-lesson business.",
     summary: "Centralized client scheduling, student progress tracking, and reporting for a private-lesson business.",
     points: [
       "Unified scheduling, client records, and instruction analytics in one CRM.",
@@ -109,6 +114,7 @@ export const businessCases: BusinessCase[] = [
     org: "Lapidary Arts · Capstone",
     period: "2026",
     role: "Project Manager — led a team of 5",
+    preview: "Led a 5-person capstone digitizing 50 years of physical invoices.",
     summary: "Directed a capstone team preserving 50 years of physical invoices as a queryable digital archive.",
     points: [
       "Led scope elicitation, planning, meeting minutes, and bottleneck analysis across a 5-person team.",
@@ -123,6 +129,7 @@ export const businessCases: BusinessCase[] = [
     period: "2026 – Present",
     role: "Lead Researcher",
     status: "building",
+    preview: "Quantifying rent-vs-own breakevens across U.S. metros, 2000–2024.",
     summary:
       "Quantifying how the post-pandemic surge in home prices and mortgage rates shifted the breakeven between owning and renting across U.S. metros, 2000–2024.",
     points: [
