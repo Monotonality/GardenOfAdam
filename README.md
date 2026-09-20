@@ -1,152 +1,121 @@
-# Garden of Adam
+# Michael D'Angelo: Personal Site
 
-A personal web app hub — one place for all the small tools, toys, and utilities I build for myself.
+[![Build Status](https://img.shields.io/github/actions/workflow/status/mldangelo/personal-site/node.js.yml?branch=main)](https://github.com/mldangelo/personal-site/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/mldangelo/personal-site?style=social)](https://github.com/mldangelo/personal-site/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/mldangelo/personal-site?style=social)](https://github.com/mldangelo/personal-site/network/members)
 
-**Stack:** Next.js 16 · Vercel · Supabase · shadcn/ui · Tailwind v4
+The source for [mldangelo.com](https://mldangelo.com), a portfolio, résumé,
+project archive, and writing site built with
+[Next.js](https://nextjs.org/), [React](https://react.dev/),
+[TypeScript](https://www.typescriptlang.org/), and
+[Tailwind CSS](https://tailwindcss.com/).
 
-**Domain:** [gardenofadam.com](https://gardenofadam.com)
+The architecture is reusable and MIT licensed. The content and visual design
+are personal, so a fork needs a full rebrand.
 
----
+**[Visit the live site →](https://mldangelo.com)**
 
-## Vision
+## What is here
 
-I build small web apps for myself. Instead of spinning up a new project and database every time, this is a single place to host them all. Each app lives at its own route (`/todolist`, `/notes`, ...) and shares one Supabase project while keeping its own tables.
+- A statically exported Next.js 16 site deployed to GitHub Pages.
+- A responsive light/dark design system built from semantic CSS tokens.
+- Markdown writing with drafts, RSS, and page metadata.
+- A filterable résumé that still prints in full.
+- Tests for components, content, metadata, and the final static export.
 
-## The Hub
+## Get started
 
-The root URL — [gardenofadam.com](https://gardenofadam.com) — is the hub: a dark-themed minimalist dashboard that lists every app. What you see depends on who you are.
+### With a coding agent
 
-**Features:**
-- Search bar to filter apps by name
-- Toggle between grid view (squares) and list view (rows)
-- User button (top-right) for sign in / account menu
-- Each app shown as a card or row with name, description, status badge, and icon
+Open your fork in a coding agent and ask:
 
-## Access Model
-
-All managed through a single Supabase Auth account. A permissions table maps who can see what.
-
-| Level | Meaning |
-|---|---|
-| **Public** | Anyone can visit, no account needed |
-| **User** | Signed in with Supabase Auth — can access |
-| **Approved** | Signed in + manually approved by me |
-| **Owner** | Only me |
-
-## Project Structure
-
-```
-gardenofadam/
-├── src/
-│   ├── app/
-│   │   ├── page.tsx               # Hub
-│   │   ├── layout.tsx             # Root layout (dark theme)
-│   │   ├── globals.css            # Tailwind + theme variables
-│   │   └── auth/                  # Auth pages
-│   │       ├── login/
-│   │       ├── sign-up/
-│   │       ├── sign-up-success/
-│   │       ├── forgot-password/
-│   │       ├── update-password/
-│   │       ├── error/
-│   │       └── confirm/route.ts
-│   ├── components/
-│   │   ├── ui/                    # shadcn/ui primitives
-│   │   ├── app-card.tsx           # Grid card
-│   │   ├── app-row.tsx            # List row
-│   │   ├── search-bar.tsx         # Search input
-│   │   ├── view-toggle.tsx        # Grid/List toggle
-│   │   ├── user-button.tsx        # Auth-aware user menu
-│   │   ├── login-form.tsx
-│   │   ├── sign-up-form.tsx
-│   │   ├── forgot-password-form.tsx
-│   │   ├── update-password-form.tsx
-│   │   └── logout-button.tsx
-│   ├── lib/
-│   │   ├── apps.ts                # App registry (single source of truth)
-│   │   ├── permissions.ts         # Access control helpers
-│   │   └── supabase/
-│   │       ├── client.ts          # Browser Supabase client
-│   │       ├── server.ts          # Server Supabase client
-│   │       └── middleware.ts      # Proxy session helpers
-│   └── proxy.ts                   # Next.js 16 proxy (session refresh)
-├── supabase/
-│   └── migrations/
-│       └── 00001_app_permissions.sql
-├── .env.local                     # Supabase credentials (gitignored)
-├── components.json                # shadcn config
-└── README.md
+```text
+Read AGENTS.md, use the Node version in .nvmrc, install the locked
+dependencies, and start the development server. Do not change the site yet.
+Tell me the local URL and report any setup failure with its exact output.
 ```
 
-## Adding a New App
+### Manual setup
 
-1. Create `src/app/<app-slug>/page.tsx`
-2. Add any needed Supabase tables (prefixed by app name)
-3. Add the app to `src/lib/apps.ts`:
-   ```ts
-   {
-     slug: "todolist",
-     name: "Todo List",
-     description: "A simple task manager",
-     status: "planned",   // "planned" | "building" | "live"
-     access: "user",      // "public" | "user" | "approved" | "owner"
-     color: "from-sky-500 to-blue-600",
-     icon: "✅",
-   }
-   ```
-4. It appears on the hub automatically (filtered by your access level).
-
-## Protecting a Route (per-app auth)
-
-In any app page that requires auth:
-
-```ts
-import { createClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
-
-export default async function ProtectedPage() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  if (!user) redirect("/auth/login")
-  // ... rest of your app
-}
-```
-
-## Adding the Supabase Table
-
-Run the migration in `supabase/migrations/00001_app_permissions.sql` in your Supabase SQL editor to create the `app_permissions` table. Make sure to replace `adam@example.com` with your email.
-
-## Owner Setup
-
-In `src/lib/apps.ts`, update `OWNER_EMAIL` to your email address. This grants you full access to all apps.
-
-## Getting Started
+With [GitHub CLI](https://cli.github.com/) and
+[nvm](https://github.com/nvm-sh/nvm) installed:
 
 ```bash
-npm install
+gh repo fork mldangelo/personal-site --clone
+cd personal-site
+nvm install
+npm ci
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000).
+If you use another version manager, choose a release accepted by `engines.node`
+in `package.json`.
 
-### Environment Variables
+### GitHub Codespaces
 
-Already set up in `.env.local`:
+1. Click **Fork** at the top of this page.
+2. In your fork, click **Code**, choose **Codespaces**, then create a codespace.
+3. Run:
 
+```bash
+nvm install
+npm ci
+npm run dev
 ```
-NEXT_PUBLIC_SUPABASE_URL=<your-project-url>
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<your-anon-key>
+
+Codespaces provides the tools, so you do not need to install them locally.
+
+## Adapt it with a coding agent
+
+When you are ready to customize the site, give the agent your résumé, profile
+details, links, images, and intended site URL. Try:
+
+```text
+Read AGENTS.md and docs/adapting-guide.md, set up the repository, then rebrand
+this fork for [NAME] with the details and assets I provide. Work on a topic
+branch and preserve the current routes and design unless I say otherwise.
+Inventory the existing posts, external writing, résumé, and projects before
+changing the shared identity. Do not relabel that content as mine. Ask whether
+unmatched personal content should keep its original attribution, be replaced,
+or be removed. Use the guide's reference map to update every identity surface
+and generated asset. Search for remaining upstream details and run the full
+validation suite. Do not commit, push, merge, change GitHub settings, create
+secrets, or modify DNS. Report the external steps that remain.
 ```
 
-## Deployment
+The **[adapting guide](./docs/adapting-guide.md)** has focused prompts for
+writing, feature removal, visual changes, and deployment, plus a map of the
+files an agent should inspect.
 
-Push to `main` — Vercel auto-deploys.
+## Commands
 
-[github.com/Monotonality/GardenOfAdam](https://github.com/Monotonality/GardenOfAdam)
+```bash
+npm run dev             # Start the development server
+npm run format          # Format with Prettier and Biome
+npm run lint            # Run Biome checks
+npm run type-check      # Run TypeScript
+npm test                # Run Vitest
+npm run build           # Build the production static export
+npm run verify-export   # Inspect the generated HTML and XML
+npm run og              # Regenerate the share card
+npm run og:check        # Verify the committed share card is current
+```
 
-## App Inventory
+CI checks formatting, linting, types, the share card, tests, the production
+build, and the exported site on every pull request.
 
-| Route | App | Status | Access |
-|---|---|---|---|
-| `/` | Hub | Live | Public |
-| ... | ... | ... | ... |
+## Deploy
+
+Pushes to `main` deploy the same static build that CI validates. See the
+[adapting guide](./docs/adapting-guide.md#deployment-reference) for URL and
+domain setup.
+
+## Contributing
+
+See the [contributing guide](./docs/contributing.md) for setup, branch and commit
+conventions, validation, and pull request expectations.
+
+## License
+
+[MIT](./LICENSE). Use it however you want.
