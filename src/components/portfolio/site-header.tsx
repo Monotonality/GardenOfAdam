@@ -1,50 +1,37 @@
 import Link from "next/link"
-import type { ReactNode } from "react"
-import { cn } from "@/lib/utils"
-import type { Mode } from "@/lib/portfolio/technical"
-import { GithubIcon, LinkedinIcon } from "./social-icons"
+import { ThemeToggle } from "./theme-toggle"
 
-const GITHUB_URL = "https://github.com/Monotonality"
-// TODO: add LinkedIn profile URL when ready
-const LINKEDIN_URL = "#"
+const NAV_LINKS = [
+  { href: "#projects", label: "Projects" },
+  { href: "#resume", label: "Résumé" },
+]
 
-export function SiteHeader({ mode, toggle }: { mode: Mode; toggle: ReactNode }) {
-  const technical = mode === "technical"
+export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between gap-4 px-6">
+    <header className="mx-auto flex w-full max-w-4xl items-center justify-between px-6 py-6">
+      <Link href="#top" className="font-display text-lg font-medium tracking-tight">
+        Adam Torres
+      </Link>
+      <nav aria-label="Primary" className="flex items-center gap-1">
+        {NAV_LINKS.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+          >
+            {link.label}
+          </Link>
+        ))}
         <Link
-          href={technical ? "/?mode=technical" : "/?mode=business"}
-          className={cn(
-            "transition-colors",
-            technical
-              ? "font-mono text-sm text-terminal hover:text-terminal"
-              : "font-serif text-xl font-semibold tracking-tight"
-          )}
+          href="/apps"
+          className="rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
         >
-          {technical ? "adam@torres" : "Adam Torres"}
+          Apps
         </Link>
-        <div className="flex items-center gap-2 sm:gap-4">
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="GitHub"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <GithubIcon className="size-5" />
-          </a>
-          <a
-            href={LINKEDIN_URL}
-            aria-label="LinkedIn"
-            title="Soon"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <LinkedinIcon className="size-5" />
-          </a>
-          {toggle}
-        </div>
-      </div>
+        <span className="px-1">
+          <ThemeToggle />
+        </span>
+      </nav>
     </header>
   )
 }

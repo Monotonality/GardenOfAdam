@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
-import { Inter, JetBrains_Mono, Lora } from "next/font/google"
+import Script from "next/script"
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 
 const inter = Inter({
@@ -14,17 +15,28 @@ const jetbrains_mono = JetBrains_Mono({
   variable: "--font-mono",
 })
 
-const lora = Lora({
+const fraunces = Fraunces({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-serif",
+  variable: "--font-display",
+  weight: ["400", "500", "600"],
 })
 
 export const metadata: Metadata = {
-  title: "Adam Torres — Engineer & Business Analyst",
+  title: "Adam Torres",
   description:
-    "Adam Torres — business analytics & AI. Full-stack engineer building AI systems, and a data strategist advising leadership. Technical and business modes in one place.",
+    "Engineer, ML builder, and data & analytics lead. Personal site and the Garden of Adam — a collection of small tools.",
 }
+
+const THEME_SCRIPT = `(function () {
+  try {
+    var stored = localStorage.getItem("theme");
+    var dark = stored
+      ? stored === "dark"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.documentElement.classList.toggle("dark", dark);
+  } catch (e) {}
+})();`
 
 export default function RootLayout({
   children,
@@ -34,16 +46,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark h-full antialiased ${inter.variable} ${jetbrains_mono.variable} ${lora.variable}`}
+      suppressHydrationWarning
+      className={`h-full antialiased ${inter.variable} ${jetbrains_mono.variable} ${fraunces.variable}`}
     >
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{if(new URLSearchParams(location.search).get("mode")==="business"){document.documentElement.classList.add("theme-business")}}catch(e){}})()`,
-          }}
-        />
-      </head>
       <body className="min-h-screen bg-background font-sans text-foreground">
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }}
+        />
         {children}
       </body>
     </html>
