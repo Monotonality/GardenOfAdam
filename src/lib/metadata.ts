@@ -6,7 +6,6 @@ import {
   SHARE_IMAGE_DIMENSIONS,
   SHARE_IMAGE_PATH,
   SITE_URL,
-  TWITTER_HANDLE,
 } from './utils';
 
 interface PageMetadataOptions {
@@ -67,8 +66,6 @@ export const siteManifest = `${FAVICON_PATH}/manifest.json`;
 
 export const sharedTwitter: Metadata['twitter'] = {
   card: 'summary_large_image',
-  site: TWITTER_HANDLE,
-  creator: TWITTER_HANDLE,
   images: [SHARE_IMAGE_PATH],
 };
 

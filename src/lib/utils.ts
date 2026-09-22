@@ -5,10 +5,9 @@
 import profile from '@/data/profile.json';
 
 // Site configuration
-export const SITE_URL = 'https://mldangelo.com';
+export const SITE_URL = 'https://www.gardenofadam.com';
 export const AUTHOR_NAME = profile.name;
 export const SITE_INITIALS = profile.initials;
-export const TWITTER_HANDLE = '@dangelosaurus';
 /**
  * The portrait. Used for JSON-LD `image`, where the value should be a picture
  * of the person, not a designed card.

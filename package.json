@@ -1,11 +1,11 @@
 {
   "name": "personal-site",
   "version": "4.1.0",
-  "homepage": "https://mldangelo.com/",
+  "homepage": "https://www.gardenofadam.com/",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mldangelo/personal-site.git"
+    "url": "https://github.com/Monotonality/GardenOfAdam.git"
   },
   "engines": {
     "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
