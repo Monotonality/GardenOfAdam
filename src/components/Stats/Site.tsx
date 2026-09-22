@@ -53,7 +53,7 @@ async function fetchGitHubStats(): Promise<GitHubStatsResult> {
   try {
     const token = process.env.GITHUB_TOKEN;
     const response = await fetch(
-      'https://api.github.com/repos/mldangelo/personal-site',
+      'https://api.github.com/repos/Monotonality/GardenOfAdam',
       {
         headers: {
           Accept: 'application/vnd.github.v3+json',
