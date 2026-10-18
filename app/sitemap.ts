@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 
+import { getGalleryCollectionSlugs } from '@/data/gallery';
 import routes from '@/data/routes';
 import { getAllPosts } from '@/lib/posts';
 import { SITE_URL } from '@/lib/utils';
@@ -18,6 +19,7 @@ const ROUTE_META: Record<
   '/about': { changeFrequency: 'monthly', priority: 0.8 },
   '/resume': { changeFrequency: 'monthly', priority: 0.8 },
   '/writing': { changeFrequency: 'weekly', priority: 0.8 },
+  '/gallery': { changeFrequency: 'monthly', priority: 0.7 },
   '/projects': { changeFrequency: 'monthly', priority: 0.8 },
   '/stats': { changeFrequency: 'weekly', priority: 0.5 },
   '/contact': { changeFrequency: 'yearly', priority: 0.5 },
@@ -50,5 +52,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...postEntries];
+  const galleryEntries: MetadataRoute.Sitemap = getGalleryCollectionSlugs().map(
+    (slug) => ({
+      url: `${SITE_URL}/gallery/${slug}/`,
+      changeFrequency: 'monthly',
+      priority: 0.65,
+    }),
+  );
+
+  return [...staticEntries, ...postEntries, ...galleryEntries];
 }

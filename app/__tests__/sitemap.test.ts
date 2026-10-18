@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
+import routes from '@/data/routes';
 import { SITE_URL } from '@/lib/utils';
 import sitemap from '../sitemap';
+
+function canonicalPageUrl(path: string): string {
+  return path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}/`;
+}
 
 describe('sitemap', () => {
   it('uses trailing slashes for exported page routes', () => {
@@ -14,6 +19,7 @@ describe('sitemap', () => {
         expect.objectContaining({ url: `${SITE_URL}/resume/` }),
         expect.objectContaining({ url: `${SITE_URL}/projects/` }),
         expect.objectContaining({ url: `${SITE_URL}/writing/` }),
+        expect.objectContaining({ url: `${SITE_URL}/gallery/` }),
         expect.objectContaining({ url: `${SITE_URL}/stats/` }),
         expect.objectContaining({ url: `${SITE_URL}/contact/` }),
       ]),
@@ -59,11 +65,12 @@ describe('sitemap', () => {
 
   it('covers each navigation route exactly once', () => {
     const entries = sitemap();
-    const staticUrls = entries
-      .filter((entry) => !entry.lastModified)
-      .map((entry) => entry.url);
+    const routeUrls = routes.map((route) => canonicalPageUrl(route.path));
+    const matched = entries.filter((entry) => routeUrls.includes(entry.url));
 
-    expect(staticUrls).toHaveLength(7);
-    expect(new Set(staticUrls).size).toBe(7);
+    expect(matched).toHaveLength(routeUrls.length);
+    expect(new Set(matched.map((entry) => entry.url)).size).toBe(
+      routeUrls.length,
+    );
   });
 });
