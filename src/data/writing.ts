@@ -7,6 +7,14 @@ export interface WritingItem {
 
 const data: WritingItem[] = [
   {
+    title:
+      'Empowering peers and saving lives: reflection from 100+ hours of service',
+    url: 'https://www.linkedin.com/pulse/empowering-peers-saving-lives-reflection-from-100-hours-adam-torres-hcxmc/',
+    date: '2026-11-02',
+    description:
+      'Harm reduction outreach with End Overdose, academic accessibility support, and student governance work from 100+ hours of community service at UT Dallas.',
+  },
+  {
     title: 'Bridging theory and practice: my internship at Motorola Solutions',
     url: 'https://www.linkedin.com/pulse/bridging-theory-practice-my-internship-motorola-solutions-adam-torres-3gpmc/',
     date: '2026-08-15',
