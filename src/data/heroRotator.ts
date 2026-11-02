@@ -1,6 +1,7 @@
 /** Phrases cycled in the homepage hero typewriter. */
 export const HERO_ROTATOR_PHRASES = [
   'AI & analytics student',
+  'Executive Director',
   'Financial researcher',
   'Actriant consultant',
   'daRSVP inventor',
