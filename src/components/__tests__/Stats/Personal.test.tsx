@@ -35,7 +35,7 @@ describe('Personal', () => {
     render(<Personal />);
 
     expect(screen.getByText('Current city')).toBeInTheDocument();
-    expect(screen.getByText('New York, NY')).toBeInTheDocument();
+    expect(screen.getByText('Frisco, TX')).toBeInTheDocument();
   });
 
   it('has a link for countries visited', () => {

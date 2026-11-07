@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { SITE_URL } from '@/lib/utils';
+import { getWritingItems } from '@/lib/writing';
 
 import { GET } from '../route';
 
@@ -25,8 +26,9 @@ describe('feed.xml route', () => {
     const response = await GET();
     const xml = await response.text();
 
-    expect(xml).toContain(
-      '<lastBuildDate>Tue, 10 Mar 2026 12:00:00 GMT</lastBuildDate>',
-    );
+    const newest = getWritingItems().find((item) => item.date);
+    const expected = new Date(`${newest!.date}T12:00:00Z`).toUTCString();
+
+    expect(xml).toContain(`<lastBuildDate>${expected}</lastBuildDate>`);
   });
 });
