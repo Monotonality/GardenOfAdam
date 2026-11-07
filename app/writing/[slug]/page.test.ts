@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { sharedOpenGraph, sharedTwitter } from '@/lib/metadata';
 import { SITE_URL } from '@/lib/utils';
 
 import { generateMetadata } from './page';
@@ -18,7 +19,7 @@ describe('writing post metadata', () => {
       params: Promise.resolve({ slug: 'what-is-darsvp' }),
     });
 
-    expect(metadata.openGraph?.images).toBeUndefined();
-    expect(metadata.twitter?.images).toBeUndefined();
+    expect(metadata.openGraph?.images).toEqual(sharedOpenGraph?.images);
+    expect(metadata.twitter?.images).toEqual(sharedTwitter?.images);
   });
 });

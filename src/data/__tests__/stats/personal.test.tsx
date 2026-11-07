@@ -48,7 +48,7 @@ describe('personal stats data', () => {
 
     expect(locationStat).toBeDefined();
     expect(locationStat!.label).toBe('Current city');
-    expect(locationStat!.value).toBe('New York, NY');
+    expect(locationStat!.value).toBe('Frisco, TX');
   });
 
   it('Age component renders and updates', () => {

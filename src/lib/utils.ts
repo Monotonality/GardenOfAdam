@@ -14,8 +14,8 @@ export const SITE_INITIALS = profile.initials;
  */
 export const SITE_IMAGE_PATH = '/images/me.jpg';
 export const SITE_IMAGE_DIMENSIONS = {
-  width: 1024,
-  height: 1024,
+  width: 773,
+  height: 780,
 } as const;
 
 /**

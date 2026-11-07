@@ -138,7 +138,8 @@ describe('readImageSize', () => {
     ['/../package.json', 'OUTSIDE_PUBLIC'],
     ['/%2e%2e/package.json', 'OUTSIDE_PUBLIC'],
     ['/missing-article-image.png', 'NOT_FOUND'],
-    ['/robots.txt', 'UNSUPPORTED_OR_MALFORMED'],
+    ['/robots.txt', 'NOT_FOUND'],
+    ['/og.meta.json', 'UNSUPPORTED_OR_MALFORMED'],
   ])('reports a specific failure for %s', (src, code) => {
     expect.assertions(2);
 

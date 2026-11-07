@@ -36,9 +36,18 @@ describe('writing information architecture', () => {
         name: 'Selected writing elsewhere',
       }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { level: 2, name: 'Guides' }),
-    ).toBeInTheDocument();
+    const guide = getWritingItems().find(
+      (item) => item.isExternal && !item.date,
+    );
+    if (guide) {
+      expect(
+        screen.getByRole('heading', { level: 2, name: 'Guides' }),
+      ).toBeInTheDocument();
+    } else {
+      expect(
+        screen.queryByRole('heading', { level: 2, name: 'Guides' }),
+      ).not.toBeInTheDocument();
+    }
 
     expect(container.querySelectorAll('.writing-item h3')).toHaveLength(
       getWritingItems().length,
